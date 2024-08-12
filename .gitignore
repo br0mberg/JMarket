@@ -1,0 +1,72 @@
+# Ignore .idea folder and related files
+/.idea/
+/*.iml
+
+# Default ignored files
+/shelf/
+/workspace.xml
+/httpRequests/
+/dataSources/
+/dataSources.local.xml
+
+# Ignore IDE-specific files
+/.vscode/
+/*.swp
+*.swo
+*.DS_Store
+*.vscode
+/.project
+/.classpath
+/.settings/
+
+# Ignore log files
+*.log
+
+# Ignore compiled Java class files
+*.class
+
+# Ignore build directories
+/build/
+/target/
+/out/
+
+# Ignore dependency directories
+/node_modules/
+/vendor/
+
+# Ignore environmental variable files
+.env
+.env.local
+.env.*.local
+
+# Ignore any temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+
+# Ignore OS generated files
+Thumbs.db
+.DS_Store
+
+# Ignore database files
+*.sqlite
+*.db
+*.sql
+*.pdb
+
+# Ignore Maven or Gradle wrapper files
+/.mvn/
+/.gradle/
+/!gradle/wrapper/gradle-wrapper.jar
+
+# Ignore jar and war files
+*.jar
+*.war
+
+# Ignore IDE project files
+*.idea
+*.project
+
+# Ignore properties files
+*.properties

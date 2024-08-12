@@ -4,6 +4,8 @@ import java.sql.Date;
 
 public class Product {
 
+    private int id;
+
     private String name;
 
     private String description;
@@ -20,15 +22,16 @@ public class Product {
 
     private Date quantityChangeDate;
 
-    public Product(String name, String description, String category, int price, int quantity, int articleNumber, Date createdDate, Date quantityChangeDate) {
-        this.name = name;
-        this.description = description;
-        this.category = category;
-        this.price = price;
-        this.quantity = quantity;
-        this.articleNumber = articleNumber;
-        this.createdDate = createdDate;
-        this.quantityChangeDate = quantityChangeDate;
+    public Product() {
+
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

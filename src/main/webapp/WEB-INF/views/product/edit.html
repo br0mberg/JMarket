@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <link rel="stylesheet" th:href="@{/css/product/edit.css}">
+</head>
+<body>
+<div class="form-container">
+    <h1>Edit Product</h1>
+    <form th:method="PATCH" th:action="@{/products/{id}(id=${product.id})}" th:object="${product}">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="Enter product name"/>
+
+        <label for="description">Description</label>
+        <input type="text" th:field="*{description}" id="description" placeholder="Enter product description"/>
+
+        <label for="category">Category</label>
+        <input type="text" th:field="*{category}" id="category" placeholder="Enter product category"/>
+
+        <label for="price">Price</label>
+        <input type="text" th:field="*{price}" id="price" placeholder="Enter product price"/>
+
+        <label for="quantity">Quantity</label>
+        <input type="text" th:field="*{quantity}" id="quantity" placeholder="Enter product quantity"/>
+
+        <label for="articleNumber">Article number</label>
+        <input type="text" th:field="*{articleNumber}" id="articleNumber" placeholder="Enter product article number"/>
+
+        <input type="submit" value="Update Product">
+    </form>
+
+    <div class="back-button">
+        <a th:href="@{/products}">Back to Products</a>
+    </div>
+</div>
+
+</body>
+</html>
