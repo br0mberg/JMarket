@@ -1,6 +1,7 @@
 # Ignore .idea folder and related files
-/.idea/
+.idea/
 /*.iml
+target/
 
 # Default ignored files
 /shelf/

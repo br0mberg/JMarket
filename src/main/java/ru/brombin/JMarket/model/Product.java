@@ -1,25 +1,35 @@
 package ru.brombin.JMarket.model;
 
+import org.hibernate.validator.constraints.*;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.*;
 import java.sql.Date;
 
 public class Product {
-
     private int id;
-
+    @NotBlank(message="Name should not be empty")
+    @Size(min=2, max=50, message="Name should be between 2 and 50 characters")
     private String name;
-
+    @NotBlank(message="Description should not be empty")
+    @Size(max=255, message="Description should be lower than 255")
     private String description;
-
+    @NotBlank(message="Category should not be empty")
+    @Size(min=2, max=20, message="Category should be between 2 and 20 characters")
     private String category;
-
+    @NotNull(message="Price can't be null")
+    @PositiveOrZero(message="Price should be greater than 0")
     private int price;
-
+    @NotNull(message="Price can't be null")
+    @PositiveOrZero(message="Quantity should be greater than 0")
     private int quantity;
-
-    private int articleNumber;
-
+    @NotBlank(message="Article Number can't be null")
+    @Size(min=6, max=12, message="Article Number should be between 6 and 12 characters")
+    @Pattern(regexp="[A-Za-z0-9]+")
+    private String articleNumber;
+    @PastOrPresent
     private Date createdDate;
-
+    @PastOrPresent
     private Date quantityChangeDate;
 
     public Product() {
@@ -74,11 +84,11 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public int getArticleNumber() {
+    public String getArticleNumber() {
         return articleNumber;
     }
 
-    public void setArticleNumber(int articleNumber) {
+    public void setArticleNumber(String articleNumber) {
         this.articleNumber = articleNumber;
     }
 

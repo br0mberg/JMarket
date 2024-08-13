@@ -3,11 +3,12 @@ package ru.brombin.JMarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.dao.ProductDao;
 import ru.brombin.JMarket.model.Product;
 
-import java.sql.Date;
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -29,6 +30,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         Optional<Product> productOptional = productDao.show(id);
+        if (productOptional.isEmpty()) return "redirect:/products";
         model.addAttribute("product", productOptional.get());
         return "product/show";
     }
@@ -40,9 +42,10 @@ public class ProductController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("product") Product product) {
+    public String create(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) return "product/new";
         productDao.addNewProduct(product);
-        return "product/index";
+        return "redirect:/products";
     }
 
     @GetMapping("/{id}/edit")
@@ -53,14 +56,22 @@ public class ProductController {
             return "product/edit";
         } else {
             // Логика обработки случая, когда продукт не найден
-            return "product/index";
+            return "redirect:/products";
         }
 
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("product") Product product, @PathVariable("id") int id) {
+    public String update(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, @PathVariable("id") int id) {
+        if (bindingResult.hasErrors()) return "product/edit";
         productDao.update(id, product);
-        return "product/show";
+        return "redirect:/products/" + id;
+    }
+
+    //DELETE
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+        productDao.delete(id);
+        return "redirect:/products";
     }
 }

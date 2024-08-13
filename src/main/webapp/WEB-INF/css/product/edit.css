@@ -70,3 +70,10 @@ body {
 .back-button a:hover {
     text-decoration: underline;
 }
+
+.error-message {
+     color: #dc3545;
+     font-size: 14px;
+     margin-top: -10px;
+     margin-bottom: 15px;
+ }

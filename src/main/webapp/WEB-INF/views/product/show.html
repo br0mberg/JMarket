@@ -23,6 +23,12 @@
         <a th:href="@{/products/{id}/edit(id=${product.getId()})}">Edit product</a>
     </div>
 
+    <div class="delete-button">
+        <form th:action="@{/products/{id}(id=${product.getId()})}" th:method="DELETE">
+            <button type="submit" class="delete-button">Delete product</button>
+        </form>
+    </div>
+
     <div class="back-button">
         <a th:href="@{/products}">Back to Products</a>
     </div>

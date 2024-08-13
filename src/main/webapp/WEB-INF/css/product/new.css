@@ -55,3 +55,10 @@ body {
 .form-container input[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+}

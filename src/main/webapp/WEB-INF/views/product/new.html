@@ -12,21 +12,27 @@
     <form th:method="POST" th:action="@{/products}" th:object="${product}">
         <label for="name">Name</label>
         <input type="text" th:field="*{name}" id="name"/>
+        <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
 
         <label for="description">Description</label>
         <input type="text" th:field="*{description}" id="description"/>
+        <div class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</div>
 
         <label for="category">Category</label>
         <input type="text" th:field="*{category}" id="category"/>
+        <div class="error-message" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category error</div>
 
         <label for="price">Price</label>
         <input type="text" th:field="*{price}" id="price"/>
+        <div class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
 
         <label for="quantity">Quantity</label>
         <input type="text" th:field="*{quantity}" id="quantity"/>
+        <div class="error-message" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Quantity error</div>
 
         <label for="articleNumber">Article number</label>
         <input type="text" th:field="*{articleNumber}" id="articleNumber"/>
+        <div class="error-message" th:if="${#fields.hasErrors('articleNumber')}" th:errors="*{articleNumber}">Article number error</div>
 
         <input type="submit" value="Add Product">
     </form>

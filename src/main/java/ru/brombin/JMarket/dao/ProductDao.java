@@ -56,4 +56,9 @@ public class ProductDao {
                 product.getPrice(), product.getQuantity(), product.getArticleNumber(),
                 product.getCreatedDate(), product.getQuantityChangeDate());
     }
+
+    public void delete(int id) {
+        String sql = "DELETE FROM Product WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }
