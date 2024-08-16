@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All items</title>
+    <link rel="stylesheet" th:href="@{/css/item/index.css}">
+</head>
+<body>
+
+<div class="item-list" th:each="item : ${items}">
+    <a th:href="@{/items/{id}(id=${item.getId()})}" th:text="${item.getName()} + ' (' + ${item.getArticleNumber()} + ')'">Item Name</a>
+</div>
+
+<div class="add-item-button">
+    <a th:href="@{/items/new}">
+        <button>Add New Item</button>
+    </a>
+</div>
+
+</body>
+</html>

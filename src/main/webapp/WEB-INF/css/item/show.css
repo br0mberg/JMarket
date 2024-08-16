@@ -10,7 +10,7 @@ body {
     height: 100vh;
 }
 
-.product-container {
+.item-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -18,19 +18,19 @@ body {
     width: 400px;
 }
 
-.product-container h1 {
+.item-container h1 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #007BFF;
     text-align: center;
 }
 
-.product-container p {
+.item-container p {
     margin: 10px 0;
     font-size: 18px;
 }
 
-.product-container p span {
+.item-container p span {
     font-weight: bold;
     color: #555;
 }

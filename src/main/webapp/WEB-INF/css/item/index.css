@@ -10,13 +10,13 @@ body {
     min-height: 100vh;
 }
 
-.product-list {
+.item-list {
     width: 80%;
     max-width: 600px;
     margin: 20px 0;
 }
 
-.product-list a {
+.item-list a {
     display: block;
     padding: 10px;
     margin-bottom: 10px;
@@ -28,15 +28,15 @@ body {
     font-size: 18px;
 }
 
-.product-list a:hover {
+.item-list a:hover {
     background-color: #f1f1f1;
 }
 
-.add-product-button {
+.add-item-button {
     margin-top: 20px;
 }
 
-.add-product-button button {
+.add-item-button button {
     padding: 10px 20px;
     background-color: #007BFF;
     color: #fff;
@@ -46,6 +46,6 @@ body {
     cursor: pointer;
 }
 
-.add-product-button button:hover {
+.add-item-button button:hover {
     background-color: #0056b3;
 }
