@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New person</title>
+    <link rel="stylesheet" th:href="@{/css/person/new.css}">
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Add New Item</h1>
+    <form th:method="POST" th:action="@{/people}" th:object="${person}">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name"/>
+        <div class="error-message" th:if="${#fields.hasErrors('name')}"
+             th:errors="*{name}">Name error</div>
+
+        <label for="age">Age</label>
+        <input type="text" th:field="*{age}" id="age"/>
+        <div class="error-message" th:if="${#fields.hasErrors('age')}"
+             th:errors="*{age}">Age error</div>
+
+        <label for="email">Email</label>
+        <input type="text" th:field="*{email}" id="email"/>
+        <div class="error-message" th:if="${#fields.hasErrors('email')}"
+             th:errors="*{email}">Email error</div>
+
+        <label for="dateOfBirth">Enter date of birth (dd/mm/yyyy)</label>
+        <input type="text" th:field="*{dateOfBirth}" id="dateOfBirth"/>
+        <div class="error-message" th:if="${#fields.hasErrors('dateOfBirth')}"
+             th:errors="*{dateOfBirth}">Date Of Birth error</div>
+
+        <input type="submit" value="Add person">
+    </form>
+</div>
+
+</body>
+</html>

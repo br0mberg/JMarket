@@ -2,10 +2,11 @@ package ru.brombin.JMarket.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -34,6 +35,12 @@ public class Person {
     @OneToMany(mappedBy = "owner")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Item> items;
+    @Column(name="date_of_birth")
+    @Temporal(TemporalType.DATE)
+    private Date dateOfBirth;
+    @Column(name="registration_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registrationDate;
 
     public Person() {
     }
@@ -45,6 +52,23 @@ public class Person {
         this.getItems().add(item);
         item.setOwner(this);
     }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
     public List<Item> getItems() {
         return items;
     }

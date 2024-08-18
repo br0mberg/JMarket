@@ -8,13 +8,12 @@ import ru.brombin.JMarket.model.Person;
 import java.util.List;
 
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Integer> {
+public interface ItemRepository extends JpaRepository<Item, Integer> {
 
-    List<Person> findByName(String name);
+    List<Item> findByName(String  itemName);
 
-    List<Person> findByNameOrderByAge(String name);
+    List<Item> findByOwner(Person owner);
 
-    Person findByEmail(String email);
+    Item findByArticleNumber(String articleNumber);
 
-    List<Person> findByEmailStartingWith(String startingWith);
 }

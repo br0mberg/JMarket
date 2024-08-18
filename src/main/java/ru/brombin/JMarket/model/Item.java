@@ -2,10 +2,11 @@ package ru.brombin.JMarket.model;
 
 import jakarta.persistence.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
-import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name="Item")
@@ -48,13 +49,11 @@ public class Item {
     private String articleNumber;
 
     @Column(name="created_date")
-    @NotBlank(message="Created date can't be empty")
-    @PastOrPresent
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
     @Column(name="quantity_change_date")
-    @NotBlank(message="Quantity change date can't be empty")
-    @PastOrPresent
+    @Temporal(TemporalType.TIMESTAMP)
     private Date quantityChangeDate;
 
     @ManyToOne
@@ -166,7 +165,7 @@ public class Item {
         this.setPrice(updatedItem.getPrice());
         this.setArticleNumber(updatedItem.getArticleNumber());
         this.setQuantity(updatedItem.getQuantity());
-        this.setQuantityChangeDate(Date.valueOf(LocalDate.now()));
+        this.setQuantityChangeDate(new Date());
     }
 }
 

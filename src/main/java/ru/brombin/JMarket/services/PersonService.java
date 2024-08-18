@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.repositories.PersonRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +30,17 @@ public class PersonService {
         return person.orElse(null);
     }
 
+    public List<Person> findByName(String name) {
+        return personRepository.findByNameOrderByAge(name);
+    }
+
+    public Person findByEmail(String email){
+        return personRepository.findByEmail(email);
+    }
+
     @Transactional
     public void save(Person person) {
+        person.setRegistrationDate(new Date());
         personRepository.save(person);
     }
 
@@ -44,4 +54,5 @@ public class PersonService {
     public void delete(int id) {
         personRepository.deleteById(id);
     }
+
 }

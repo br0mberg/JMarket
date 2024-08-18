@@ -5,5 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional(readOnly = true)
-public class ItemDao {
+public class PersonDao {
+
 }

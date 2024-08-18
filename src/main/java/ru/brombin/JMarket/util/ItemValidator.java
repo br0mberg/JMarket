@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.brombin.JMarket.dao.ItemDao;
 import ru.brombin.JMarket.model.Item;
+import ru.brombin.JMarket.repositories.ItemRepository;
 
 @Component
 public class ItemValidator implements Validator {
 
-    private final ItemDao itemDao;
+    private final ItemRepository itemRepository;
     @Autowired
-    public ItemValidator(ItemDao itemDao) {
-        this.itemDao = itemDao;
+    public ItemValidator(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ItemValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Item product = (Item) target;
 
-        if (itemDao.showByArticleNumber(product.getArticleNumber()).isPresent()) {
+        if (itemRepository.findByArticleNumber(product.getArticleNumber()) != null) {
             errors.rejectValue("articleNumber", "", "Article number is already exist");
         }
     }
