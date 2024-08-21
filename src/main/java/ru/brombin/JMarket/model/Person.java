@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="Person")
@@ -19,7 +20,7 @@ public class Person {
     private int id;
 
     @Column(name="name", nullable = false)
-    @NotBlank(message="Name should not be empty")
+    @NotNull(message="Name should not be empty")
     @Size(min=2, max=30, message="Name should be between 2 and 30 characters")
     private String name;
 
@@ -31,6 +32,11 @@ public class Person {
     @NotEmpty(message="Email should not be empty")
     @Email(message = "Email should be valid")
     private String email;
+
+    @Column(name="role")
+    @NotNull(message="Role should not be empty")
+    @Enumerated(EnumType.STRING)
+    private PersonRole role;
 
     @OneToMany(mappedBy = "owner")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -51,6 +57,14 @@ public class Person {
 
         this.getItems().add(item);
         item.setOwner(this);
+    }
+
+    public PersonRole getRole() {
+        return role;
+    }
+
+    public void setRole(PersonRole role) {
+        this.role = role;
     }
 
     public Date getDateOfBirth() {
@@ -107,5 +121,18 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id == person.id && age == person.age && name.equals(person.name) && email.equals(person.email) && role == person.role && dateOfBirth.equals(person.dateOfBirth) && registrationDate.equals(person.registrationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, age, email, role, dateOfBirth, registrationDate);
     }
 }

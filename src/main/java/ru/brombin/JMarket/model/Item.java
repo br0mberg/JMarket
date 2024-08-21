@@ -18,19 +18,19 @@ public class Item {
     private int id;
 
     @Column(name="name")
-    @NotBlank(message="Name should not be empty")
+    @NotNull(message="Name should not be empty")
     @Size(min=2, max=50, message="Name should be between 2 and 50 characters")
     private String name;
 
     @Column(name="description")
-    @NotBlank(message="Description should not be empty")
+    @NotNull(message="Description should not be empty")
     @Size(max=255, message="Description should be lower than 255")
     private String description;
 
     @Column(name="category")
-    @NotBlank(message="Category should not be empty")
-    @Size(min=2, max=20, message="Category should be between 2 and 20 characters")
-    private String category;
+    @NotNull(message="Category should not be empty")
+    @Enumerated(EnumType.STRING)
+    private ItemCategory category;
 
     @Column(name="price")
     @NotNull(message="Price can't be null")
@@ -38,12 +38,12 @@ public class Item {
     private int price;
 
     @Column(name="quantity")
-    @NotNull(message="Price can't be null")
+    @NotNull(message="Quantity can't be null")
     @PositiveOrZero(message="Quantity should be greater than 0")
     private int quantity;
 
-    @Column(name="article_number", unique = true)
-    @NotBlank(message="Article Number can't be null")
+    @Column(name="article_number", nullable = false, unique = true)
+    @NotNull(message="Article Number can't be empty")
     @Size(min=6, max=12, message="Article Number should be between 6 and 12 characters")
     @Pattern(regexp="[A-Za-z0-9]+")
     private String articleNumber;
@@ -64,7 +64,7 @@ public class Item {
 
     }
 
-    public Item(String name, String description, String category,
+    public Item(String name, String description, ItemCategory category,
                 int price, int quantity, String articleNumber,
                 Date createdDate, Date quantityChangeDate) {
         this.name = name;
@@ -109,11 +109,11 @@ public class Item {
         this.description = description;
     }
 
-    public String getCategory() {
+    public ItemCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ItemCategory category) {
         this.category = category;
     }
 

@@ -53,7 +53,6 @@ Thumbs.db
 # Ignore database files
 *.sqlite
 *.db
-*.sql
 *.pdb
 
 # Ignore Maven or Gradle wrapper files
