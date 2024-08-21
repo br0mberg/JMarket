@@ -1,7 +1,7 @@
 # JMarket
 
-**Проект:** JMarket by Brombin Andrey  
-**Технологии:** Java 17, Spring Framework, Spring Boot, Spring Data JPA, Hibernate, JDBC API, JDBCTemplate, Thymeleaf  
+**Проект:** JMarket 1.0 by Brombin Andrey  
+**Технологии:** Java 17, Spring Framework, Spring Data JPA, Hibernate, JDBC API, JDBCTemplate, Thymeleaf  
 **Формат:** CRUD/REST приложение  
 **Деплой:** Apache Tomcat 9 (war формат)  
 
