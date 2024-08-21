@@ -1,5 +1,6 @@
 package ru.brombin.JMarket.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.model.Item;
 import ru.brombin.JMarket.services.ItemService;
 import ru.brombin.JMarket.util.ItemValidator;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/items")

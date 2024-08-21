@@ -1,16 +1,14 @@
 package ru.brombin.JMarket.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.brombin.JMarket.model.Item;
 import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.services.PersonService;
 import ru.brombin.JMarket.util.PersonValidator;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/people")
