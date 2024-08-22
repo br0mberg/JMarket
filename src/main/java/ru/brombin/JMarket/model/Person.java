@@ -18,10 +18,14 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="name", nullable = false)
+    @Column(name="username", nullable = false)
     @NotNull(message="Name should not be empty")
     @Size(min=2, max=30, message="Name should be between 2 and 30 characters")
-    private String name;
+    private String username;
+
+    @Column(name="password")
+    //TODO
+    private String password;
 
     @Column(name="age", nullable = false)
     @Min(value=0, message="Age should be greater than 0")
@@ -56,6 +60,14 @@ public class Person {
 
         this.getItems().add(item);
         item.setOwner(this);
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public PersonRole getRole() {
@@ -106,12 +118,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getAge() {
@@ -127,11 +139,11 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return id == person.id && age == person.age && name.equals(person.name) && email.equals(person.email) && role == person.role && dateOfBirth.equals(person.dateOfBirth) && registrationDate.equals(person.registrationDate);
+        return id == person.id && age == person.age && username.equals(person.username) && email.equals(person.email) && role == person.role && dateOfBirth.equals(person.dateOfBirth) && registrationDate.equals(person.registrationDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, email, role, dateOfBirth, registrationDate);
+        return Objects.hash(id, username, age, email, role, dateOfBirth, registrationDate);
     }
 }

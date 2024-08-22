@@ -11,7 +11,7 @@
 	<groupId>ru.brombin</groupId>
 	<artifactId>JMarket</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>JMarket</name>
+	<username>JMarket</username>
 	<description>JMarket project</description>
 	<url/>
 	<licenses>
@@ -60,6 +60,21 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -31,7 +31,7 @@ public class PersonService {
     }
 
     public List<Person> findByName(String name) {
-        return personRepository.findByNameOrderByAge(name);
+        return personRepository.findByUsernameOrderByAge(name);
     }
 
     public Person findByEmail(String email){

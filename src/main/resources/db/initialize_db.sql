@@ -1,6 +1,7 @@
 CREATE TABLE PERSON {
     id int PRIMARY KEY,
-    name varchar(30) NOT NULL,
+    username varchar(30) NOT NULL,
+    password varchar NOTNULL,
     age int NOT NULL CHECK (age >= 0),
     email varchar(100) NOT NULL UNIQUE,
     role varchar NOT NULL,
@@ -10,7 +11,7 @@ CREATE TABLE PERSON {
 
 CREATE TABLE Item {
     id int PRIMARY KEY,
-    name varchar(50) NOT NULL,
+    username varchar(50) NOT NULL,
     description varchar(255) NOT NULL,
     category varchar NOT NULL,
     price int NOT NULL CHECK (price >= 0),

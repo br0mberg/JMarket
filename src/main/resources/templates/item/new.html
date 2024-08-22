@@ -10,9 +10,9 @@
 <div class="form-container">
     <h1>Add New Item</h1>
     <form th:method="POST" th:action="@{/items}" th:object="${item}">
-        <label for="name">Name</label>
-        <input type="text" th:field="*{name}" id="name"/>
-        <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
+        <label for="username">Name</label>
+        <input type="text" th:field="*{username}" id="username"/>
+        <div class="error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div>
 
         <label for="description">Description</label>
         <input type="text" th:field="*{description}" id="description"/>

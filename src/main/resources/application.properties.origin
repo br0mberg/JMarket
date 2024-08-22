@@ -1,7 +1,7 @@
-spring.application.name=JMarket
+spring.application.username=JMarket
 
 # Data Source
-spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.driver-class-username=org.postgresql.Driver
 spring.datasource.url=
 spring.datasource.username=
 spring.datasource.password=
