@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.model.Person;
+import ru.brombin.JMarket.model.PersonRole;
 import ru.brombin.JMarket.repositories.PersonRepository;
 
 import java.util.Date;
@@ -41,6 +42,7 @@ public class PersonService {
     @Transactional
     public void save(Person person) {
         person.setRegistrationDate(new Date());
+        person.setRole(PersonRole.USER);
         personRepository.save(person);
     }
 

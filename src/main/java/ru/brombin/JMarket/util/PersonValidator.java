@@ -28,6 +28,9 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
 
+        if (personRepository.findByUsername(person.getUsername()) != null)
+            errors.rejectValue("username", "", "This username is already taken");
+
         if (personRepository.findByEmail(person.getEmail()) != null)
             errors.rejectValue("email", "", "This email is already taken");
 

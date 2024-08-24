@@ -36,7 +36,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()
                         .anyRequest().authenticated());*/
 
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login").permitAll())
+        http.csrf().disable()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(form -> form.
                         loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
