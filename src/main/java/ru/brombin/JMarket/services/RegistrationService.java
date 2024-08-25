@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.model.Person;
+import ru.brombin.JMarket.model.PersonRole;
 import ru.brombin.JMarket.repositories.PersonRepository;
 
 import java.util.Date;
@@ -25,6 +26,7 @@ public class RegistrationService {
     @Transactional
     public void register(Person person) {
         person.setRegistrationDate(new Date());
+        person.setRole(PersonRole.ROLE_USER);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         personRepository.save(person);
     }

@@ -24,7 +24,6 @@ public class Person {
     private String username;
 
     @Column(name="password")
-    //TODO
     private String password;
 
     @Column(name="age", nullable = false)

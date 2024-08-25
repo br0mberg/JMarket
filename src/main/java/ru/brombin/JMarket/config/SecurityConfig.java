@@ -31,24 +31,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        /*http.csrf(csrf -> csrf.disable())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()
-                        .anyRequest().authenticated());*/
-
-        http.csrf().disable()
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()
-                        .anyRequest().authenticated())
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/people", "/people/**", "/items/**").hasRole("ADMIN")
+                        .requestMatchers("/items/new").hasRole("SELLER")
+                        .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()
+                        .anyRequest().hasAnyRole("USER", "ADMIN", "SELLER")
+                )
                 .formLogin(form -> form.
                         loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
                         .defaultSuccessUrl("/items", true)
-                        .failureUrl("/auth/login?error"))
+                        .failureUrl("/auth/login?error")
+                )
                 .authenticationProvider(authenticationProvider())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login"));
+                        .logoutSuccessUrl("/auth/login")
+                );
 
         // отдаем страницу, и указываем куда данные с формы отправлять (нам самим их обрабатывать не надо)
         // поля в форме обязательно username и password иначе spring security не увидит

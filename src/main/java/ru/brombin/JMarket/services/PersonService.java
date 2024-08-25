@@ -42,7 +42,6 @@ public class PersonService {
     @Transactional
     public void save(Person person) {
         person.setRegistrationDate(new Date());
-        person.setRole(PersonRole.USER);
         personRepository.save(person);
     }
 

@@ -4,7 +4,7 @@ CREATE TABLE PERSON {
     password varchar NOTNULL,
     age int NOT NULL CHECK (age >= 0),
     email varchar(100) NOT NULL UNIQUE,
-    role varchar NOT NULL,
+    role varchar(100) NOT NULL,
     date_of_birth DATE NOT NULL,
     registration_date TIMESTAMP NOT NULL
 };
@@ -13,7 +13,7 @@ CREATE TABLE Item {
     id int PRIMARY KEY,
     username varchar(50) NOT NULL,
     description varchar(255) NOT NULL,
-    category varchar NOT NULL,
+    category varchar(100) NOT NULL,
     price int NOT NULL CHECK (price >= 0),
     quantity int NOT NULL CHECK (quantity >= 0),
     article_number varchar(12) NOT NULL UNIQUE,
