@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.model.PersonRole;
 import ru.brombin.JMarket.repositories.PersonRepository;
+import ru.brombin.JMarket.util.exceptions.PersonNotFoundException;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class PersonService {
 
     public Person findOne(int id) {
         Optional<Person> person = personRepository.findById(id);
-        return person.orElse(null);
+        return person.orElseThrow(PersonNotFoundException::new);
     }
 
     public List<Person> findByName(String name) {

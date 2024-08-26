@@ -1,5 +1,6 @@
 package ru.brombin.JMarket.controller.api;
 
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,12 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.services.PersonService;
+import ru.brombin.JMarket.util.ErrorResponse;
 import ru.brombin.JMarket.util.PersonValidator;
+import ru.brombin.JMarket.util.exceptions.PersonNotFoundException;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/people")
@@ -37,9 +44,6 @@ public class PeopleApiController {
     @GetMapping("/{id}")
     public ResponseEntity<Person> getPersonById(@PathVariable("id") int id) {
         Person person = personService.findOne(id);
-        if (person == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(person);
     }
 
@@ -77,5 +81,14 @@ public class PeopleApiController {
         }
         personService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(PersonNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "Person with this id wasn't found!",
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 }
