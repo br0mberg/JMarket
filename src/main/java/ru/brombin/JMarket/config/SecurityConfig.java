@@ -8,10 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.brombin.JMarket.services.PersonDetailsService;
@@ -27,13 +24,11 @@ public class SecurityConfig {
         this.personDetailsService = personDetailsService;
     }
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/people", "/people/**", "/items/**").hasRole("ADMIN")
                         .requestMatchers("/items/new").hasRole("SELLER")
+                        .requestMatchers("/people", "/people/**", "/items/**").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN", "SELLER")
                 )

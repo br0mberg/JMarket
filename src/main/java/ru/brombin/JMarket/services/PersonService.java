@@ -56,4 +56,11 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
+    @Transactional
+    public void saveAll(List<Person> people) {
+        for (Person p : people) {
+            p.setRegistrationDate(new Date());
+        }
+        personRepository.saveAll(people);
+    }
 }

@@ -19,7 +19,6 @@ public class PersonDao {
 
     public Set<Person> findAllPeopleWithAllItems() {
         Set<Person> people = new HashSet<Person>(entityManager.createQuery("select p from Person p LEFT JOIN FETCH p.items").getResultList());
-
         return people;
     }
 }

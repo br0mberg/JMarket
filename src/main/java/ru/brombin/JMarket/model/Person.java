@@ -38,7 +38,7 @@ public class Person {
     @Column(name="role")
     @NotNull(message="Role should not be empty")
     @Enumerated(EnumType.STRING)
-    private PersonRole role; // стандартно User в PersonService
+    private PersonRole role;
 
     @OneToMany(mappedBy = "owner")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
