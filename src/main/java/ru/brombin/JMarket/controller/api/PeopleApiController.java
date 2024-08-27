@@ -7,13 +7,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.services.PersonService;
 import ru.brombin.JMarket.util.ErrorResponse;
 import ru.brombin.JMarket.util.PersonValidator;
+import ru.brombin.JMarket.util.exceptions.PersonNotCreatedException;
 import ru.brombin.JMarket.util.exceptions.PersonNotFoundException;
 
 import java.sql.Timestamp;
@@ -47,20 +50,52 @@ public class PeopleApiController {
         return ResponseEntity.ok(person);
     }
 
+    // TODO: вынести логику в контроллер
     @PostMapping()
     public ResponseEntity<Person> createPerson(@RequestBody @Valid Person person, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(null);
+            StringBuilder errorMessage = new StringBuilder();
+
+            List<FieldError> errors = bindingResult.getFieldErrors();
+            for (FieldError f : errors) {
+                errorMessage.append(f.getField())
+                        .append(" - ").append(f.getDefaultMessage())
+                        .append(";");
+            }
+            throw new PersonNotCreatedException(errors.toString());
         }
         personService.save(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(person);
     }
 
+    // TODO: вынести логику в контроллер
     @PostMapping("/batch")
-    public ResponseEntity<List<Person>> createPeople(@RequestBody List<Person> people) {
+    public ResponseEntity<HttpStatus> createPeople(@RequestBody List<Person> people) {
+        StringBuilder errorMessage = new StringBuilder();
+
+        for (Person person : people) {
+            BindingResult bindingResult = new BeanPropertyBindingResult(person, "person");
+            personValidator.validate(person, bindingResult);
+
+            if (bindingResult.hasErrors()) {
+                errorMessage.append("Error of validation on Person: " + person.getId() + " ");
+                List<FieldError> errors = bindingResult.getFieldErrors();
+                for (FieldError f : errors) {
+                    errorMessage.append(f.getField())
+                            .append(" - ").append(f.getDefaultMessage())
+                            .append(";");
+                }
+            }
+        }
+
+        if (errorMessage.length() > 0) {
+            throw new PersonNotCreatedException(errorMessage.toString());
+        }
+
         personService.saveAll(people);
-        return ResponseEntity.status(HttpStatus.CREATED).body(people);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Person> updatePerson(@PathVariable("id") int id, @RequestBody @Valid Person person, BindingResult bindingResult) {
@@ -90,5 +125,14 @@ public class PeopleApiController {
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handleException(PersonNotCreatedException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
