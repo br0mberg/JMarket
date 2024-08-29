@@ -53,14 +53,16 @@ public class Item {
 
     @Column(name="created_date")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private Date createdDate;
 
     @Column(name="quantity_change_date")
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private Date quantityChangeDate;
 
     @ManyToOne
-    @JoinColumn(name="person_id", referencedColumnName = "id")
+    @JoinColumn(name="person_id", referencedColumnName = "id", nullable = true)
     private Person owner;
 
     public Item() {

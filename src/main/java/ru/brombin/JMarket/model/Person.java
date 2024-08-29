@@ -36,7 +36,6 @@ public class Person {
     private String email;
 
     @Column(name="role")
-    @NotNull(message="Role should not be empty")
     @Enumerated(EnumType.STRING)
     private PersonRole role;
 

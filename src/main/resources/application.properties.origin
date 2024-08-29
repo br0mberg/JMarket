@@ -1,4 +1,5 @@
 spring.application.username=JMarket
+server.port=
 
 # Data Source
 spring.datasource.driver-class-username=org.postgresql.Driver
