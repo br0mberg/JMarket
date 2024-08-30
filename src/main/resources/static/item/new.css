@@ -1,64 +1,62 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    margin: 0;
-    padding: 0;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
+    color: #fff;
 }
 
 .form-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    width: 400px;
-}
-
-.form-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #007BFF;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     text-align: center;
-}
-
-.form-container label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #555;
-}
-
-.form-container input[type="text"] {
+    max-width: 400px;
     width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
 }
 
-.form-container input[type="submit"] {
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 15px 0 5px;
+    font-size: 1.1em;
+}
+
+input[type="text"], input[type="password"], select {
     width: 100%;
     padding: 10px;
-    background-color: #007BFF;
-    color: #fff;
+    border-radius: 5px;
     border: none;
-    border-radius: 4px;
-    font-size: 18px;
-    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 1em;
 }
 
-.form-container input[type="submit"]:hover {
-    background-color: #0056b3;
+input[type="submit"] {
+    background-color: #f5576c;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background-color: #f093fb;
 }
 
 .error-message {
-    color: #dc3545;
-    font-size: 14px;
-    margin-top: -10px;
-    margin-bottom: 15px;
+    color: #ff6b6b;
+    font-size: 0.9em;
+    margin-top: -15px;
+    margin-bottom: 10px;
 }

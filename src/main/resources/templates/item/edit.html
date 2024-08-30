@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Item</title>
-    <link rel="stylesheet" th:href="@{/css/item/edit.css}">
+    <link rel="stylesheet" th:href="@{/item/edit.css}">
 </head>
 <body>
 <div class="form-container">
     <h1>Edit Item</h1>
-    <form th:method="PATCH" th:action="@{/items/{id}(id=${product.id})}" th:object="${item}">
-        <label for="username">Name</label>
-        <input type="text" th:field="*{username}" id="username" placeholder="Enter item username"/>
-        <div class="error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div>
+    <form th:method="PATCH" th:action="@{/items/{id}(id=${item.id})}" th:object="${item}">
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="Enter item name"/>
+        <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
 
         <label for="description">Description</label>
         <input type="text" th:field="*{description}" id="description" placeholder="Enter item description"/>
         <div class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</div>
 
         <label for="category">Category</label>
-        <input type="text" th:field="*{category}" id="category" placeholder="Enter item category"/>
+        <select th:field="*{category}" id="category" required>
+            <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+        </select>
         <div class="error-message" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category error</div>
 
         <label for="price">Price</label>
@@ -33,11 +35,13 @@
         <input type="text" th:field="*{articleNumber}" id="articleNumber" placeholder="Enter item article number"/>
         <div class="error-message" th:if="${#fields.hasErrors('articleNumber')}" th:errors="*{articleNumber}">Article number error</div>
 
+        <input type="hidden" th:field="*{createdDate}" />
+
         <input type="submit" value="Update item">
     </form>
 
     <div class="back-button">
-        <a th:href="@{/products}">Back to Items</a>
+        <a th:href="@{/items}">Back to Items</a>
     </div>
 </div>
 

@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.model.Item;
+import ru.brombin.JMarket.model.ItemCategory;
+import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.services.ItemService;
 import ru.brombin.JMarket.util.ItemValidator;
 
@@ -39,13 +41,15 @@ public class ItemController {
     @GetMapping("/new")
     public String addNew(Model model) {
         model.addAttribute("item", new Item());
+        model.addAttribute("categories", ItemCategory.values());
         return "item/new";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult) {
         itemValidator.validate(item, bindingResult);
-        if (bindingResult.hasErrors()) return "item/new";
+        if (bindingResult.hasErrors())
+            return "item/new";
 
         itemService.save(item);
         return "redirect:/items";
@@ -54,15 +58,19 @@ public class ItemController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         Item item = itemService.findOne(id);
+        model.addAttribute("categories", ItemCategory.values());
         model.addAttribute("item", item);
         return "item/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult, @PathVariable("id") int id) {
+    public String update(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult, @PathVariable("id") int id, Model model) {
         itemValidator.validate(item, bindingResult);
 
-        if (bindingResult.hasErrors()) return "item/edit";
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", ItemCategory.values());
+            return "item/edit";
+        }
 
         itemService.update(id, item);
         return "redirect:/items/" + id;

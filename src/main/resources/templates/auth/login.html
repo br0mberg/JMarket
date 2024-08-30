@@ -3,28 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
+    <link rel="stylesheet" th:href="@{/auth/login.css}">
 </head>
 <body>
 
-<form name="f" method="post" action="/process_login">
-    <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}"/>
+<div class="container">
+    <h1>Welcome to JMarket!</h1>
+    <p>Login to your account or register to join us.</p>
 
-    <label for="username">Введите имя пользователя</label>
-    <input type="text" name="username" id="username"/>
-    <br/>
-    <label for="password">Введите пароль</label>
-    <input type="password" name="password" id="password"/>
-    <br/>
-    <input type="submit" value="Login"/>
+    <form name="f" method="post" action="/process_login">
+        <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}"/>
 
-    <div th:if="${param.error}" style="color: red">
-        Неправильные имя или пароль
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" placeholder="Enter your username" required/>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Enter your password" required/>
+
+        <input type="submit" value="Login"/>
+
+        <div th:if="${param.error}" style="color: red; margin-top: 10px;">
+            Incorrect username or password
+        </div>
+
+        <div th:if="${param.logout}" style="color: green; margin-top: 10px;">
+            You have been logged out.
+        </div>
+    </form>
+
+    <div class="register">
+        <p>Don't have an account? <a th:href="@{/auth/registration}">Register here</a></p>
     </div>
-
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
-</form>
+</div>
 
 </body>
 </html>

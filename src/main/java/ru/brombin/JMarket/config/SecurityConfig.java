@@ -27,11 +27,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(auth -> auth
+                        // Разрешаем доступ к списку товаров и отдельному товару для роли USER
                         .requestMatchers("/items").hasAnyRole("USER", "SELLER", "ADMIN")
+                        .requestMatchers("/items/{id}").hasAnyRole("USER", "SELLER", "ADMIN")
+                        // Разрешаем доступ к созданию новых товаров только для SELLER и ADMIN
                         .requestMatchers("/items/new").hasAnyRole("SELLER", "ADMIN")
-                        .requestMatchers("/items/**").hasRole("ADMIN")
+                        // Разрешаем доступ к редактированию товаров только для ADMIN
+                        .requestMatchers("/items/*/edit").hasRole("ADMIN")
+                        // Полный доступ к людям и товарам только для ADMIN
                         .requestMatchers("/people", "/people/**", "/items/**").hasRole("ADMIN")
+                        // Доступ ко всем страницам авторизации и ошибкам для всех
                         .requestMatchers("/auth/**", "/error").permitAll()
+                        // Все остальные запросы доступны для ролей USER, ADMIN, SELLER
                         .anyRequest().hasAnyRole("USER", "ADMIN", "SELLER")
                 )
                 .formLogin(form -> form.

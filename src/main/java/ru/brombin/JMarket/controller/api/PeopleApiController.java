@@ -1,16 +1,12 @@
 package ru.brombin.JMarket.controller.api;
 
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.services.PersonService;
@@ -19,10 +15,7 @@ import ru.brombin.JMarket.util.PersonValidator;
 import ru.brombin.JMarket.util.exceptions.PersonNotCreatedException;
 import ru.brombin.JMarket.util.exceptions.PersonNotFoundException;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/people")
@@ -54,18 +47,22 @@ public class PeopleApiController {
     @PostMapping()
     public ResponseEntity<Person> createPerson(@RequestBody @Valid Person person, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            StringBuilder errorMessage = new StringBuilder();
-
-            List<FieldError> errors = bindingResult.getFieldErrors();
-            for (FieldError f : errors) {
-                errorMessage.append(f.getField())
-                        .append(" - ").append(f.getDefaultMessage())
-                        .append(";");
-            }
-            throw new PersonNotCreatedException(errors.toString());
+            throw new PersonNotCreatedException(buildErrorMessage(bindingResult));
         }
         personService.save(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(person);
+    }
+
+    private String buildErrorMessage(BindingResult bindingResult) {
+        StringBuilder errorMessage = new StringBuilder();
+
+        List<FieldError> errors = bindingResult.getFieldErrors();
+        for (FieldError f : errors) {
+            errorMessage.append(f.getField())
+                    .append(" - ").append(f.getDefaultMessage())
+                    .append(";");
+        }
+        return errorMessage.toString();
     }
 
     // TODO: вынести логику в контроллер
@@ -79,16 +76,11 @@ public class PeopleApiController {
 
             if (bindingResult.hasErrors()) {
                 errorMessage.append("Error of validation on Person: " + person.getId() + " ");
-                List<FieldError> errors = bindingResult.getFieldErrors();
-                for (FieldError f : errors) {
-                    errorMessage.append(f.getField())
-                            .append(" - ").append(f.getDefaultMessage())
-                            .append(";");
-                }
+                errorMessage.append(buildErrorMessage(bindingResult));
             }
         }
 
-        if (errorMessage.length() > 0) {
+        if (!errorMessage.isEmpty()) {
             throw new PersonNotCreatedException(errorMessage.toString());
         }
 

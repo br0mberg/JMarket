@@ -3,40 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>New item</title>
-    <link rel="stylesheet" th:href="@{/css/item/new.css}">
+    <link rel="stylesheet" th:href="@{/item/new.css}">
 </head>
 <body>
 
 <div class="form-container">
     <h1>Add New Item</h1>
     <form th:method="POST" th:action="@{/items}" th:object="${item}">
-        <label for="username">Name</label>
-        <input type="text" th:field="*{username}" id="username"/>
-        <div class="error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name error</div>
+        <label for="name">Name</label>
+        <input type="text" th:field="*{name}" id="name" placeholder="Enter item name"/>
+        <div class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
 
         <label for="description">Description</label>
-        <input type="text" th:field="*{description}" id="description"/>
+        <input type="text" th:field="*{description}" id="description" placeholder="Enter item description"/>
         <div class="error-message" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description error</div>
 
         <label for="category">Category</label>
-        <input type="text" th:field="*{category}" id="category"/>
+        <select th:field="*{category}" id="category" required>
+            <option th:each="category : ${categories}" th:value="${category}" th:text="${category}"></option>
+        </select>
         <div class="error-message" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category error</div>
 
         <label for="price">Price</label>
-        <input type="text" th:field="*{price}" id="price"/>
+        <input type="text" th:field="*{price}" id="price" placeholder="Enter item price"/>
         <div class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price error</div>
 
         <label for="quantity">Quantity</label>
-        <input type="text" th:field="*{quantity}" id="quantity"/>
+        <input type="text" th:field="*{quantity}" id="quantity" placeholder="Enter item quantity"/>
         <div class="error-message" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Quantity error</div>
 
         <label for="articleNumber">Article number</label>
-        <input type="text" th:field="*{articleNumber}" id="articleNumber"/>
+        <input type="text" th:field="*{articleNumber}" id="articleNumber" placeholder="Enter item article number"/>
         <div class="error-message" th:if="${#fields.hasErrors('articleNumber')}" th:errors="*{articleNumber}">Article number error</div>
-
-        <label for="dateOfBirth">dateOfBirth</label>
-        <input type="text" th:field="*{dateOfBirth}" id="dateOfBirth"/>
-        <div class="error-message" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Date Of Birth error</div>
 
         <input type="submit" value="Add item">
     </form>

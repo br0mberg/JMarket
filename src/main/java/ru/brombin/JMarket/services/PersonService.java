@@ -1,11 +1,13 @@
 package ru.brombin.JMarket.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.model.Person;
-import ru.brombin.JMarket.model.PersonRole;
 import ru.brombin.JMarket.repositories.PersonRepository;
+import ru.brombin.JMarket.security.PersonDetails;
 import ru.brombin.JMarket.util.exceptions.PersonNotFoundException;
 
 import java.util.Date;
@@ -38,6 +40,16 @@ public class PersonService {
 
     public Person findByEmail(String email){
         return personRepository.findByEmail(email);
+    }
+
+    public Person getCurrentPerson() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        String username = ((PersonDetails) authentication.getPrincipal()).getUsername();
+        return personRepository.findByUsername(username).orElse(null);
     }
 
     @Transactional

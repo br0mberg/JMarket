@@ -3,18 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>All items</title>
-    <link rel="stylesheet" th:href="@{/css/item/index.css}">
+    <link rel="stylesheet" th:href="@{/item/index.css}">
+    <link rel="stylesheet" href="../../static/item/index.css">
 </head>
 <body>
 
-<div class="item-list" th:each="item : ${items}">
-    <a th:href="@{/items/{id}(id=${item.getId()})}" th:text="${item.getName()} + ' (' + ${item.getArticleNumber()} + ')'">Item Name</a>
-</div>
+<div class="container">
+    <div class="item-grid" th:each="item : ${items}">
+        <div class="item-card">
+            <a th:href="@{/items/{id}(id=${item.getId()})}">
+                <img th:src="@{/images/default-item.png}" alt="Item Image" class="item-image"/>
+                <div class="item-details">
+                    <h2 th:text="${item.getName()}"></h2>
+                    <p th:text="${item.getArticleNumber()}"></p>
+                    <p>Price: <span th:text="${item.getPrice()} + ' RUB'"></span></p>
+                </div>
+            </a>
+        </div>
+    </div>
 
-<div class="add-item-button">
-    <a th:href="@{/items/new}">
-        <button>Add New Item</button>
-    </a>
+    <div class="add-item-button">
+        <a th:href="@{/items/new}">
+            <button>Add New Item</button>
+        </a>
+    </div>
+
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="Logout" class="logout-button">
+    </form>
 </div>
 
 </body>
