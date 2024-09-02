@@ -1,5 +1,7 @@
 package ru.brombin.JMarket.services;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,14 +12,13 @@ import ru.brombin.JMarket.repositories.PersonRepository;
 import ru.brombin.JMarket.security.PersonDetails;
 import ru.brombin.JMarket.util.exceptions.PersonNotFoundException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class PersonService {
-
     private final PersonRepository personRepository;
 
     @Autowired
@@ -54,13 +55,23 @@ public class PersonService {
 
     @Transactional
     public void save(Person person) {
-        person.setRegistrationDate(new Date());
+        person.setRegistrationDate(LocalDateTime.now());
         personRepository.save(person);
     }
 
     @Transactional
     public void update(int id, Person updatedPerson) {
-        updatedPerson.setId(id);
+        Optional<Person> existingPersonOpt = personRepository.findById(id);
+
+        if (existingPersonOpt.isEmpty()) {
+            throw new EntityNotFoundException("Person with id " + id + " not found");
+        }
+
+        Person existingPerson = existingPersonOpt.get();
+
+        updatedPerson.setId(existingPerson.getId());
+        updatedPerson.setRegistrationDate(existingPerson.getRegistrationDate());
+
         personRepository.save(updatedPerson);
     }
 
@@ -72,7 +83,7 @@ public class PersonService {
     @Transactional
     public void saveAll(List<Person> people) {
         for (Person p : people) {
-            p.setRegistrationDate(new Date());
+            p.setRegistrationDate(LocalDateTime.now());
         }
         personRepository.saveAll(people);
     }

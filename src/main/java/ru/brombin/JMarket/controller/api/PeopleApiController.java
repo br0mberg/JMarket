@@ -43,7 +43,6 @@ public class PeopleApiController {
         return ResponseEntity.ok(person);
     }
 
-    // TODO: вынести логику в контроллер
     @PostMapping()
     public ResponseEntity<Person> createPerson(@RequestBody @Valid Person person, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -65,7 +64,6 @@ public class PeopleApiController {
         return errorMessage.toString();
     }
 
-    // TODO: вынести логику в контроллер
     @PostMapping("/batch")
     public ResponseEntity<HttpStatus> createPeople(@RequestBody List<Person> people) {
         StringBuilder errorMessage = new StringBuilder();

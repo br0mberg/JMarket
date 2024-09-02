@@ -8,6 +8,7 @@ import ru.brombin.JMarket.model.Person;
 import ru.brombin.JMarket.model.PersonRole;
 import ru.brombin.JMarket.repositories.PersonRepository;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Service
@@ -25,7 +26,9 @@ public class RegistrationService {
 
     @Transactional
     public void register(Person person) {
-        person.setRegistrationDate(new Date());
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        timestamp.setNanos(0);
+        person.setRegistrationDate(timestamp.toLocalDateTime());
         person.setRole(PersonRole.ROLE_USER);
         person.setPassword(passwordEncoder.encode(person.getPassword()));
         personRepository.save(person);

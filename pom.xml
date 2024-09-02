@@ -11,7 +11,7 @@
 	<groupId>ru.brombin</groupId>
 	<artifactId>JMarket</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<username>JMarket</username>
+	<name>JMarket</name>
 	<description>JMarket project</description>
 	<url/>
 	<licenses>
@@ -78,6 +78,19 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.30</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.2.0</version>
+		</dependency>
 
 	</dependencies>
 

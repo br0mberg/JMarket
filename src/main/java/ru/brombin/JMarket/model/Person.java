@@ -1,16 +1,16 @@
 package ru.brombin.JMarket.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import org.hibernate.annotations.Cascade;
+import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name="Person")
+@Data
 public class Person {
 
     @Id
@@ -19,38 +19,31 @@ public class Person {
     private int id;
 
     @Column(name="username", nullable = false)
-    @NotNull(message="Name should not be empty")
-    @Size(min=2, max=30, message="Name should be between 2 and 30 characters")
     private String username;
 
-    @Column(name="password")
+    @Column(name="password", nullable = false)
     private String password;
 
     @Column(name="age", nullable = false)
-    @Min(value=0, message="Age should be greater than 0")
     private int age;
 
     @Column(name="email", nullable = false, unique = true)
-    @NotEmpty(message="Email should not be empty")
-    @Email(message = "Email should be valid")
     private String email;
 
-    @Column(name="role")
+    @Column(name="role", nullable = false)
     @Enumerated(EnumType.STRING)
     private PersonRole role;
 
-    @OneToMany(mappedBy = "owner")
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @OneToMany(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Item> items;
-    @Column(name="date_of_birth")
-    @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
-    @Column(name="registration_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date registrationDate;
 
-    public Person() {
-    }
+    @Column(name="date_of_birth", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private LocalDateTime dateOfBirth;
+
+    @Column(name="registration_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime registrationDate;
 
     public void addItem(Item item) {
         if (this.getItems() == null)
@@ -58,78 +51,6 @@ public class Person {
 
         this.getItems().add(item);
         item.setOwner(this);
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public PersonRole getRole() {
-        return role;
-    }
-
-    public void setRole(PersonRole role) {
-        this.role = role;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Date getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     @Override

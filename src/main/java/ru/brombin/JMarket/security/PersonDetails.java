@@ -16,7 +16,6 @@ public class PersonDetails implements UserDetails {
         this.person = person;
     }
 
-    // Чтобы получать аутентифированного пользователя
     public Person getPerson() {
         return this.person;
     }
