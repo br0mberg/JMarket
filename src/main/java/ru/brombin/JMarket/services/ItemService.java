@@ -1,31 +1,26 @@
 package ru.brombin.JMarket.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.brombin.JMarket.model.Item;
-import ru.brombin.JMarket.model.Person;
+import ru.brombin.JMarket.entity.Item;
+import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.repositories.ItemRepository;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
+@AllArgsConstructor
 public class ItemService {
-
+    @Autowired
     private final ItemRepository itemRepository;
-
-    private final PersonService personService;
-
-    public ItemService(ItemRepository itemRepository, PersonService personService) {
-        this.itemRepository = itemRepository;
-        this.personService = personService;
-    }
-
+    @Autowired
+    private final UserService userService;
 
     public List<Item> findAll() {
         return itemRepository.findAll();
@@ -40,7 +35,7 @@ public class ItemService {
         return itemRepository.findByName(name);
     }
 
-    public List<Item> findByOwner(Person owner) {
+    public List<Item> findByOwner(ru.brombin.JMarket.entity.User owner) {
         return itemRepository.findByOwner(owner);
     }
 
@@ -50,9 +45,9 @@ public class ItemService {
 
     @Transactional
     public void save(Item item) {
-        Person currentPerson = personService.getCurrentPerson();
-        if (currentPerson != null) {
-            item.setOwner(currentPerson);
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            item.setOwner(currentUser);
         }
 
         item.setCreatedDate(LocalDateTime.now());
@@ -61,7 +56,7 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    @Transactional
+    @Transactional()
     public void update(int id, Item updatedItem) {
         Optional<Item> existingItemOpt = itemRepository.findById(id);
 

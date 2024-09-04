@@ -1,15 +1,9 @@
-package ru.brombin.JMarket.model;
+package ru.brombin.JMarket.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name="Item")
@@ -49,7 +43,16 @@ public class Item {
     private LocalDateTime quantityChangeDate;
 
     @ManyToOne
-    @JoinColumn(name="person_id", referencedColumnName = "id", nullable = true)
-    private Person owner;
+    @JoinColumn(name="user_id", referencedColumnName = "id", nullable = true)
+    private User owner;
+
+    public enum ItemCategory {
+        Books, ZooItems, RepairAndConstruction, Electronics,
+        AutomotiveItems, Furniture, Sport
+    }
+
+    public static ItemCategory[] getItemCategories() {
+        return ItemCategory.values();
+    }
 }
 

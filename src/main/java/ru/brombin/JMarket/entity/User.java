@@ -1,17 +1,18 @@
-package ru.brombin.JMarket.model;
+package ru.brombin.JMarket.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
-@Table(name="Person")
+@Table(name="User")
 @Data
-public class Person {
+public class User implements UserDetails {
 
     @Id
     @Column(name="id")
@@ -32,7 +33,7 @@ public class Person {
 
     @Column(name="role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private PersonRole role;
+    private UserRole role;
 
     @OneToMany(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Item> items;
@@ -45,6 +46,14 @@ public class Person {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime registrationDate;
 
+    public static enum UserRole {
+        ROLE_ADMIN, ROLE_USER, ROLE_SELLER
+    }
+
+    public static UserRole[] getPersonRoles() {
+        return UserRole.values();
+    }
+
     public void addItem(Item item) {
         if (this.getItems() == null)
             this.setItems(new ArrayList<>());
@@ -54,10 +63,45 @@ public class Person {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(this.getRole().name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
+        User person = (User) o;
         return id == person.id && age == person.age && username.equals(person.username) && email.equals(person.email) && role == person.role && dateOfBirth.equals(person.dateOfBirth) && registrationDate.equals(person.registrationDate);
     }
 

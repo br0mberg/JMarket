@@ -8,8 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.dto.ItemDTO;
-import ru.brombin.JMarket.model.Item;
-import ru.brombin.JMarket.model.ItemCategory;
+import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.services.ItemService;
 import ru.brombin.JMarket.util.ItemValidator;
 
@@ -59,7 +58,7 @@ public class ItemController {
     @GetMapping("/new")
     public String addNew(Model model) {
         model.addAttribute("item", new ItemDTO());
-        model.addAttribute("categories", ItemCategory.values());
+        model.addAttribute("categories", Item.getItemCategories());
         return "item/new";
     }
 
@@ -80,7 +79,7 @@ public class ItemController {
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         ItemDTO itemDTO = convertToItemDTO(itemService.findOne(id));
-        model.addAttribute("categories", ItemCategory.values());
+        model.addAttribute("categories", Item.getItemCategories());
         model.addAttribute("item", itemDTO);
         return "item/edit";
     }
@@ -90,7 +89,7 @@ public class ItemController {
         itemValidator.validate(itemDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", ItemCategory.values());
+            model.addAttribute("categories", Item.getItemCategories());
             return "item/edit";
         }
 
@@ -98,7 +97,6 @@ public class ItemController {
         return "redirect:/items/" + id;
     }
 
-    //DELETE
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         itemService.delete(id);

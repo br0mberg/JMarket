@@ -1,10 +1,12 @@
 package ru.brombin.JMarket.dto;
 
-import jakarta.persistence.*;import jakarta.validation.constraints.NotNull;import jakarta.validation.constraints.Pattern;import jakarta.validation.constraints.PositiveOrZero;import jakarta.validation.constraints.Size;import lombok.Data;import org.springframework.format.annotation.DateTimeFormat;import ru.brombin.JMarket.model.ItemCategory;
-import ru.brombin.JMarket.model.Person;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+import ru.brombin.JMarket.entity.Item;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class ItemDTO {
@@ -18,7 +20,7 @@ public class ItemDTO {
     private String description;
 
     @NotNull(message="Category should not be empty")
-    private ItemCategory category;
+    private Item.ItemCategory category;
 
     @NotNull(message="Price can't be null")
     @PositiveOrZero(message="Price should be greater than 0")

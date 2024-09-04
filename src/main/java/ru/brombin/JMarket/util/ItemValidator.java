@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.brombin.JMarket.model.Item;
+import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.repositories.ItemRepository;
 
 @Component

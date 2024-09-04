@@ -1,40 +1,38 @@
 package ru.brombin.JMarket.util;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.brombin.JMarket.model.Person;
-import ru.brombin.JMarket.repositories.PersonRepository;
+import ru.brombin.JMarket.entity.User;
+import ru.brombin.JMarket.repositories.UserRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public class PersonValidator implements Validator {
-
-    private final PersonRepository personRepository;
+@AllArgsConstructor
+public class UserValidator implements Validator {
     @Autowired
-    public PersonValidator(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return Person.class.equals(clazz);
+        return User.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        Person person = (Person) target;
+        User person = (User) target;
 
         // Проверка уникальности имени пользователя
-        if (personRepository.findByUsername(person.getUsername()).isPresent())
+        if (userRepository.findByUsername(person.getUsername()).isPresent())
             errors.rejectValue("username", "", "This username is already taken");
 
         // Проверка уникальности email
-        if (personRepository.findByEmail(person.getEmail()) != null)
+        if (userRepository.findByEmail(person.getEmail()) != null)
             errors.rejectValue("email", "", "This email is already taken");
 
         // Проверка формата даты рождения

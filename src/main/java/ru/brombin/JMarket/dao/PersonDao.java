@@ -5,7 +5,8 @@ import jakarta.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.brombin.JMarket.model.Person;
+import ru.brombin.JMarket.entity.Person;
+import ru.brombin.JMarket.entity.User;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +19,7 @@ public class PersonDao {
     private EntityManager entityManager;
 
     public Set<Person> findAllPeopleWithAllItems() {
-        Set<Person> people = new HashSet<Person>(entityManager.createQuery("select p from Person p LEFT JOIN FETCH p.items").getResultList());
+        Set<Person> people = new HashSet<User>(entityManager.createQuery("select p from Person p LEFT JOIN FETCH p.items").getResultList());
         return people;
     }
 }

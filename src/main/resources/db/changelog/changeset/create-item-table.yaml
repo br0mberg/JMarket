@@ -57,7 +57,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: person_id
+                  name: user_id
                   type: int
                   constraints:
                     foreignKeyName: fk_item_person
