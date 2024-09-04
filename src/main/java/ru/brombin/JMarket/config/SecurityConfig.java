@@ -12,17 +12,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.services.UserService;
 
 @Configuration
 @EnableMethodSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    @Autowired
-    private final UserService userService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    @Autowired
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           UserService userService) throws Exception{
         http.authorizeHttpRequests(auth -> auth
                         // Разрешаем доступ к списку товаров и отдельному товару для роли USER
                         .requestMatchers("/items").hasAnyRole("USER", "SELLER", "ADMIN")
@@ -44,7 +45,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/items", true)
                         .failureUrl("/auth/login?error")
                 )
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(authenticationProvider(userService))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/auth/login")
@@ -57,7 +58,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider(UserService userService) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 
         authenticationProvider.setUserDetailsService(userService);

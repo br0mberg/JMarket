@@ -50,7 +50,7 @@ public class User implements UserDetails {
         ROLE_ADMIN, ROLE_USER, ROLE_SELLER
     }
 
-    public static UserRole[] getPersonRoles() {
+    public static UserRole[] getUserRoles() {
         return UserRole.values();
     }
 

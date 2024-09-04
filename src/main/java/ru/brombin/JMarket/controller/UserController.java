@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("people", userService.findAll());
+        model.addAttribute("users", userService.findAll());
         return "item/index";
     }
 
@@ -34,37 +34,37 @@ public class UserController {
     public String show(@PathVariable("id") int id, Model model) {
         User user = userService.findOne(id);
         model.addAttribute("user", user);
-        return "item/show";
+        return "user/show";
     }
 
     @GetMapping("/new")
     public String addNew(Model model) {
-        model.addAttribute("person", new User());
-        model.addAttribute("roles", User.getPersonRoles());
-        return "person/new";
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", User.getUserRoles());
+        return "user/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("person") @Valid UserDTO userDTO, BindingResult bindingResult) {
+    public String create(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(userDTO, bindingResult);
-        if (bindingResult.hasErrors()) return "item/new";
+        if (bindingResult.hasErrors()) return "user/new";
 
-        userService.save(convertToPerson(userDTO));
-        return "redirect:/people";
+        userService.save(convertToUser(userDTO));
+        return "redirect:/users";
     }
 
-    private User convertToPerson(UserDTO userDTO) {
+    private User convertToUser(UserDTO userDTO) {
         return modelMapper.map(userDTO, User.class);
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        UserDTO userDTO = convertToPersonDTO(userService.findOne(id));
-        model.addAttribute("person", userDTO);
-        return "person/edit";
+        UserDTO userDTO = convertToUserDTO(userService.findOne(id));
+        model.addAttribute("user", userDTO);
+        return "user/edit";
     }
 
-    private UserDTO convertToPersonDTO(User user) {
+    private UserDTO convertToUserDTO(User user) {
         return modelMapper.map(user, UserDTO.class);
     }
 
@@ -72,16 +72,16 @@ public class UserController {
     public String update(@ModelAttribute("person") @Valid UserDTO userDTO, BindingResult bindingResult, @PathVariable("id") int id) {
         userValidator.validate(userDTO, bindingResult);
 
-        if (bindingResult.hasErrors()) return "person/edit";
+        if (bindingResult.hasErrors()) return "user/edit";
 
-        userService.update(id, convertToPerson(userDTO));
-        return "redirect:/items/" + id;
+        userService.update(id, convertToUser(userDTO));
+        return "redirect:/users/" + id;
     }
 
     //DELETE
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.delete(id);
-        return "redirect:/people";
+        return "redirect:/users";
     }
 }
