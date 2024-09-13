@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.repositories.UserRepository;
-import ru.brombin.JMarket.util.exceptions.UserNotFoundException;
+import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,9 +30,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User findOne(int id) {
-        Optional<User> User = userRepository.findById(id);
-        return User.orElseThrow(UserNotFoundException::new);
+    public Optional<User> findOne(int id) {
+        Optional<User> user = userRepository.findById(id);
+        return user;
     }
 
     public List<User> findByName(String name) {
@@ -61,18 +61,17 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void update(int id, User updatedUser) {
-        Optional<User> existingUserOpt = userRepository.findById(id);
-
-        if (existingUserOpt.isEmpty()) {
-            throw new EntityNotFoundException("User with id " + id + " not found");
+        try {
+            userRepository.updateUserFields(id,
+                    updatedUser.getUsername(),
+                    updatedUser.getPassword(),
+                    updatedUser.getAge(),
+                    updatedUser.getEmail(),
+                    updatedUser.getRole(),
+                    updatedUser.getDateOfBirth());
+        } catch (Exception e) {
+            throw new NotFoundException("User with id " + id + " not found");
         }
-
-        User existingUser = existingUserOpt.get();
-
-        updatedUser.setId(existingUser.getId());
-        updatedUser.setRegistrationDate(existingUser.getRegistrationDate());
-
-        userRepository.save(updatedUser);
     }
 
     @Transactional

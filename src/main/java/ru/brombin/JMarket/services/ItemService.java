@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.brombin.JMarket.dto.ItemDTO;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.repositories.ItemRepository;
+import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,9 +28,9 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public Item findOne(int id) {
+    public Optional<Item> findOne(int id) {
         Optional<Item> item = itemRepository.findById(id);
-        return item.orElse(null);
+        return item;
     }
 
     public List<Item> findByName(String name) {
@@ -56,22 +58,19 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    @Transactional()
-    public void update(int id, Item updatedItem) {
-        Optional<Item> existingItemOpt = itemRepository.findById(id);
-
-        if (existingItemOpt.isEmpty()) {
-            throw new EntityNotFoundException("Item with id " + id + " not found");
+    @Transactional
+    public void update(int id, Item item) {
+        try {
+            itemRepository.updateFields(id,
+                    item.getName(),
+                    item.getDescription(),
+                    item.getCategory(),
+                    item.getPrice(),
+                    item.getQuantity(),
+                    item.getArticleNumber());
+        } catch (Exception e) {
+            throw new NotFoundException("Item with id " + id + " not found");
         }
-
-        Item existingItem = existingItemOpt.get();
-
-        updatedItem.setId(existingItem.getId());
-        updatedItem.setQuantityChangeDate(LocalDateTime.now());
-        updatedItem.setCreatedDate(existingItem.getCreatedDate());
-        updatedItem.setOwner(existingItem.getOwner());
-
-        itemRepository.save(updatedItem);
     }
 
     @Transactional
