@@ -94,18 +94,4 @@ public class UserController {
     private UserDTO convertToUserDTO(User user) {
         return modelMapper.map(user, UserDTO.class);
     }
-
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(NotFoundException e) {
-        return buildErrorResponse("User with this id wasn't found!", HttpStatus.NOT_FOUND);
-    }
-    private ResponseEntity<ErrorResponse> buildErrorResponse(String message, HttpStatus status) {
-        ErrorResponse errorResponse = new ErrorResponse(message, System.currentTimeMillis());
-        return new ResponseEntity<>(errorResponse, status);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(NotCreatedOrUpdatedException e) {
-        return buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 }

@@ -3,7 +3,6 @@ package ru.brombin.JMarket.controller;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,14 +11,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.dto.ItemDTO;
 import ru.brombin.JMarket.entity.Item;
-import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.services.ItemService;
 import ru.brombin.JMarket.util.ErrorResponse;
 import ru.brombin.JMarket.util.ItemValidator;
 import ru.brombin.JMarket.util.exceptions.NotCreatedOrUpdatedException;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,19 +103,5 @@ public class ItemController {
         }
 
         return id == null ? "redirect:/items" : "redirect:/items/" + id;
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(NotFoundException e) {
-        return buildErrorResponse("User with this id wasn't found!", HttpStatus.NOT_FOUND);
-    }
-    private ResponseEntity<ErrorResponse> buildErrorResponse(String message, HttpStatus status) {
-        ErrorResponse errorResponse = new ErrorResponse(message, System.currentTimeMillis());
-        return new ResponseEntity<>(errorResponse, status);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<ErrorResponse> handleException(NotCreatedOrUpdatedException e) {
-        return buildErrorResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

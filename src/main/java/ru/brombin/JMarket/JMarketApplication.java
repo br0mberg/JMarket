@@ -10,7 +10,6 @@ public class JMarketApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JMarketApplication.class, args);
 	}
-
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
