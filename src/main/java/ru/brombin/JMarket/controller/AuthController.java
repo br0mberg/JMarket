@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.services.RegistrationService;
-import ru.brombin.JMarket.util.UserValidator;
+import ru.brombin.JMarket.util.validators.UserValidator;
 
 @Controller
 @RequestMapping("/auth")

@@ -1,5 +1,7 @@
 spring.application.username=JMarket
 server.port=
+spring.mvc.hiddenmethod.filter.enabled=
+
 
 # Data Source
 spring.datasource.driver-class-username=org.postgresql.Driver
@@ -7,6 +9,7 @@ spring.datasource.url=
 spring.datasource.username=
 spring.datasource.password=
 
-#???????????? Hibernate
+# Hibernate
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.show-sql=true

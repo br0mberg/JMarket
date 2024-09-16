@@ -1,4 +1,4 @@
-package ru.brombin.JMarket.util;
+package ru.brombin.JMarket.util.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

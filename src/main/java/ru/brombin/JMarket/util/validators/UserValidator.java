@@ -1,4 +1,4 @@
-package ru.brombin.JMarket.util;
+package ru.brombin.JMarket.util.validators;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

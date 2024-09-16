@@ -4,8 +4,6 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,9 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.dto.UserDTO;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.services.UserService;
-import ru.brombin.JMarket.util.ErrorResponse;
-import ru.brombin.JMarket.util.UserValidator;
-import ru.brombin.JMarket.util.exceptions.NotCreatedOrUpdatedException;
+import ru.brombin.JMarket.util.validators.UserValidator;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 @Controller
