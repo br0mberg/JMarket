@@ -13,9 +13,9 @@ import ru.brombin.JMarket.dto.ItemDTO;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.services.ItemService;
 import ru.brombin.JMarket.util.ErrorResponse;
-import ru.brombin.JMarket.util.ItemValidator;
 import ru.brombin.JMarket.util.exceptions.NotCreatedOrUpdatedException;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
+import ru.brombin.JMarket.util.validators.ItemValidator;
 
 import java.util.List;
 import java.util.stream.Collectors;

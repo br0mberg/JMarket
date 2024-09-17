@@ -24,8 +24,9 @@ public class UserDTO {
     private String email;
 
     @NotNull(message="Role should be set")
-    private User.UserRole role;
+    private User.UserRole role = User.UserRole.ROLE_USER;
 
-    @NotNull
-    private LocalDateTime dateOfBirth;
+    @NotEmpty(message="Date of Birth should not be empty")
+    @Pattern(regexp = "\\d{4}/\\d{2}/\\d{2}", message = "Date of Birth should be in the format YYYY/MM/DD")
+    private String dateOfBirth;
 }

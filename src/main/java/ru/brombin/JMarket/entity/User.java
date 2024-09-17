@@ -1,17 +1,23 @@
 package ru.brombin.JMarket.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@Table(name="User")
-@Data
+@Table(name="\"user\"")
+@NoArgsConstructor
+@Getter
+@Setter
 public class User implements UserDetails {
 
     @Id
@@ -19,7 +25,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="username", nullable = false)
+    @Column(name="username", nullable = false, unique = true)
     private String username;
 
     @Column(name="password", nullable = false)
@@ -40,13 +46,13 @@ public class User implements UserDetails {
 
     @Column(name="date_of_birth", nullable = false)
     @Temporal(TemporalType.DATE)
-    private LocalDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name="registration_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime registrationDate;
 
-    public static enum UserRole {
+    public enum UserRole {
         ROLE_ADMIN, ROLE_USER, ROLE_SELLER
     }
 
@@ -69,12 +75,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.getPassword();
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return this.getUsername();
+        return this.username;
     }
 
     @Override

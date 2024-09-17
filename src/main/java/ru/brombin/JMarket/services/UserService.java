@@ -68,7 +68,7 @@ public class UserService implements UserDetailsService {
                     updatedUser.getAge(),
                     updatedUser.getEmail(),
                     updatedUser.getRole(),
-                    updatedUser.getDateOfBirth());
+                    updatedUser.getDateOfBirth().atStartOfDay());
         } catch (Exception e) {
             throw new NotFoundException("User with id " + id + " not found");
         }

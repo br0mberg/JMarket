@@ -61,5 +61,5 @@ databaseChangeLog:
                   type: int
                   constraints:
                     foreignKeyName: fk_item_person
-                    references: person(id)
+                    references: user(id)
                     nullable: true

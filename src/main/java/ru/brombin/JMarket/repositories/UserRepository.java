@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByUsername(String username);
 
-    List<ru.brombin.JMarket.entity.User> findByUsernameOrderByAge(String username);
+    List<User> findByUsernameOrderByAge(String username);
 
     User findByEmail(String email);
 

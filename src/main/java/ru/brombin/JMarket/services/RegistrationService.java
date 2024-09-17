@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 public class RegistrationService {
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
     
     @Transactional
