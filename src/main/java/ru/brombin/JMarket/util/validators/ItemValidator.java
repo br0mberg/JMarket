@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+import ru.brombin.JMarket.dto.ItemDTO;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.repositories.ItemRepository;
 
@@ -18,12 +19,12 @@ public class ItemValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return Item.class.equals(clazz);
+        return ItemDTO.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        Item product = (Item) target;
+        ItemDTO product = (ItemDTO) target;
 
         if (itemRepository.findByArticleNumber(product.getArticleNumber()) != null) {
             errors.rejectValue("articleNumber", "", "Article number is already exist");

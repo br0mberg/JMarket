@@ -44,22 +44,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
-    public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
-        }
-
-        Object principal = authentication.getPrincipal();
-        if (principal instanceof UserDetails) {
-            String username = ((UserDetails) principal).getUsername();
-            return userRepository.findByUsername(username).orElse(null);
-        }
-
-        return null;
-    }
-
     @Transactional
     public void save(User User) {
         User.setRegistrationDate(LocalDateTime.now());
@@ -100,6 +84,14 @@ public class UserService implements UserDetailsService {
             clientIp = request.getRemoteAddr();
         }
         return clientIp;
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return (User) authentication.getPrincipal();
+        }
+        return null;
     }
 
     @Override

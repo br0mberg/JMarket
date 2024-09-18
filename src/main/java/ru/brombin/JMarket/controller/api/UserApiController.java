@@ -9,8 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -38,14 +36,14 @@ public class UserApiController {
     
     @GetMapping()
     public ResponseEntity<List<User>> getAllPeople() {
-        logger.info("User '{}' is fetching all users", getCurrentUserName());
+        logger.info("User '{}' is fetching all users", userService.getCurrentUser().getId());
         List<User> user = userService.findAll();
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
-        logger.info("User '{}' is fetching user with ID: {}", getCurrentUserName(), id);
+        logger.info("User '{}' is fetching user with ID: {}", userService.getCurrentUser().getId(), id);
         return userService.findOne(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -53,7 +51,7 @@ public class UserApiController {
 
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO, BindingResult bindingResult) {
-        logger.info("User '{}' is creating a new user: {}", getCurrentUserName(), userDTO.getUsername());
+        logger.info("User '{}' is creating a new user: {}", userService.getCurrentUser().getId(), userDTO.getUsername());
         validateUser(userDTO, bindingResult);
         User user = convertToUser(userDTO);
         userService.save(user);
@@ -62,7 +60,7 @@ public class UserApiController {
 
     @PostMapping("/batch")
     public ResponseEntity<HttpStatus> createPeople(@RequestBody List<UserDTO> usersDTO) {
-        logger.info("User '{}' is creating a batch of users", getCurrentUserName());
+        logger.info("User '{}' is creating a batch of users", userService.getCurrentUser().getId());
         List<User> users = usersDTO.stream()
                 .map(userDTO -> {
                     validateUser(userDTO, new BeanPropertyBindingResult(userDTO, "UserDTO"));
@@ -76,45 +74,35 @@ public class UserApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
-        logger.info("User '{}' is updating user with ID: {}", getCurrentUserName(), id);
+        logger.info("User '{}' is updating user with ID: {}", userService.getCurrentUser().getId(), id);
         validateUser(userDTO, bindingResult);
         User user = convertToUser(userDTO);
-        String currentUserName = getCurrentUserName();
+        int currentUserId = userService.getCurrentUser().getId();
         return userService.findOne(id)
                 .map(existingUser -> {
                     userService.update(id, user);
-                    logger.info("User '{}' successfully updated user with ID: {}", currentUserName, id);
+                    logger.info("User '{}' successfully updated user with ID: {}", currentUserId, id);
                     return ResponseEntity.ok(user);
                 })
                 .orElseGet(() -> {
-                    logger.warn("User '{}' attempted to update non-existing user with ID: {}", currentUserName, id);
+                    logger.warn("User '{}' attempted to update non-existing user with ID: {}", currentUserId, id);
                     return ResponseEntity.notFound().build();
                 });
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable("id") int id) {
-        String currentUserName = getCurrentUserName();
-        logger.info("User '{}' is deleting user with ID: {}", currentUserName, id);
+        logger.info("User '{}' is deleting user with ID: {}", userService.getCurrentUser().getId(), id);
         return userService.findOne(id)
                 .map(user -> {
                     userService.delete(id);
-                    logger.info("User '{}' successfully deleted user with ID: {}", currentUserName, id);
                     return ResponseEntity.noContent().build();
                 })
                 .orElseGet(() -> {
-                    logger.warn("User '{}' attempted to delete non-existing user with ID: {}", currentUserName, id);
                     return ResponseEntity.notFound().build();
                 });
     }
 
-    private String getCurrentUserName() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            return authentication.getName();
-        }
-        return "unknown";
-    }
 
     private User convertToUser(UserDTO userDTO) {
         return modelMapper.map(userDTO, User.class);
@@ -123,7 +111,7 @@ public class UserApiController {
     private void validateUser(UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            logger.error("Data validation failed for author user: {}.", getCurrentUserName());
+            logger.info("Data validation failed for author user: {}.", userService.getCurrentUser().getId());
             throw new NotCreatedOrUpdatedException(buildErrorMessage(bindingResult));
         }
     }

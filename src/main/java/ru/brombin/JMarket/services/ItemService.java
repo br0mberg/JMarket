@@ -54,7 +54,6 @@ public class ItemService {
 
         item.setCreatedDate(LocalDateTime.now());
         item.setQuantityChangeDate(LocalDateTime.now());
-        item.getOwner().addItem(item);
         itemRepository.save(item);
     }
 

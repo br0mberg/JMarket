@@ -57,8 +57,7 @@ public class AuthController {
             return "auth/registration";
         }
 
-        int userId = registrationService.register(convertToUser(userDTO));
-        logger.info("User '{}' with ip '{}' successfully registered.", userId, userIp);
+        registrationService.register(convertToUser(userDTO));
         return "redirect:/auth/login";
     }
 

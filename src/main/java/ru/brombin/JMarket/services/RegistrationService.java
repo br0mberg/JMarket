@@ -19,13 +19,12 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     
     @Transactional
-    public int register(User user) {
+    public void register(User user) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         timestamp.setNanos(0);
         user.setRegistrationDate(timestamp.toLocalDateTime());
         user.setRole(User.UserRole.ROLE_USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return user.getId();
     }
 }
