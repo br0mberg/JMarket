@@ -1,7 +1,10 @@
 package ru.brombin.JMarket.controller;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +25,16 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/items")
+@AllArgsConstructor
 public class ItemController {
+    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
+    @Autowired
     private final ItemService itemService;
+    @Autowired
     private final ItemValidator itemValidator;
+    @Autowired
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public ItemController(ItemService itemService, ItemValidator itemValidator, ModelMapper modelMapper) {
-        this.itemService = itemService;
-        this.itemValidator = itemValidator;
-        this.modelMapper = modelMapper;
-    }
 
     @GetMapping()
     public String index(Model model) {

@@ -1,6 +1,7 @@
 package ru.brombin.JMarket.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -45,12 +46,18 @@ public class UserService implements UserDetailsService {
 
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         if (authentication == null || !authentication.isAuthenticated()) {
             return null;
         }
 
-        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
-        return userRepository.findByUsername(username).orElse(null);
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            return userRepository.findByUsername(username).orElse(null);
+        }
+
+        return null;
     }
 
     @Transactional
@@ -85,6 +92,14 @@ public class UserService implements UserDetailsService {
             p.setRegistrationDate(LocalDateTime.now());
         }
         userRepository.saveAll(people);
+    }
+
+    public String getClientIp(HttpServletRequest request) {
+        String clientIp = request.getHeader("X-Forwarded-For");
+        if (clientIp == null || clientIp.isEmpty()) {
+            clientIp = request.getRemoteAddr();
+        }
+        return clientIp;
     }
 
     @Override
