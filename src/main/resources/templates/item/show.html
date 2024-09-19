@@ -9,25 +9,36 @@
 
 <div class="item-container">
     <h1 th:text="${item.name}">Item Name</h1>
+
     <p><span>Name:</span> <span th:text="${item.name}">Item Name</span></p>
     <p><span>Description:</span> <span th:text="${item.description}">Item Description</span></p>
     <p><span>Category:</span> <span th:text="${item.category}">Item Category</span></p>
     <p><span>Price:</span> <span th:text="${item.price}">Item Price</span> RUB</p>
     <p><span>Quantity:</span> <span th:text="${item.quantity}">Item Quantity</span></p>
     <p><span>Article Number:</span> <span th:text="${item.articleNumber}">Item Article Number</span></p>
-    <p><span>Created Date:</span> <span th:text="${#dates.format(item.createdDate, 'yyyy-MM-dd HH:mm:ss')}">Item Created Date</span></p>
-    <p><span>Last Quantity Change:</span> <span th:text="${#dates.format(item.quantityChangeDate, 'yyyy-MM-dd HH:mm:ss')}">Item Quantity Change Date</span></p>
 
+    <!-- Date formatting -->
+    <p><span>Created Date:</span>
+        <span th:text="${#dates.format(item.createdDate, 'yyyy-MM-dd HH:mm:ss')}">Item Created Date</span>
+    </p>
+
+    <p><span>Last Quantity Change:</span>
+        <span th:text="${#dates.format(item.quantityChangeDate, 'yyyy-MM-dd HH:mm:ss')}">Item Quantity Change Date</span>
+    </p>
+
+    <!-- Edit item link -->
     <div class="edit-button">
-        <a th:href="@{/items/{id}/edit(id=${item.getId()})}">Edit item</a>
+        <a th:href="@{/items/{id}/edit(id=${item.id})}">Edit item</a>
     </div>
 
+    <!-- Delete item form -->
     <div class="delete-button">
-        <form th:action="@{/items/{id}(id=${item.getId()})}" th:method="DELETE">
+        <form th:action="@{/items/{id}(id=${item.id})}" th:method="DELETE">
             <button type="submit" class="delete-button">Delete item</button>
         </form>
     </div>
 
+    <!-- Back to items link -->
     <div class="back-button">
         <a th:href="@{/items}">Back to items</a>
     </div>

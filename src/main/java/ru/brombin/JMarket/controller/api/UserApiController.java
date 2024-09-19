@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +11,6 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.brombin.JMarket.dto.UserDTO;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.services.UserService;
 import ru.brombin.JMarket.util.validators.UserValidator;
@@ -31,8 +28,7 @@ public class UserApiController {
     private final UserService userService;
     @Autowired
     private final UserValidator userValidator;
-    @Autowired
-    private final ModelMapper modelMapper;
+
     
     @GetMapping()
     public ResponseEntity<List<User>> getAllPeople() {
@@ -50,21 +46,19 @@ public class UserApiController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO, BindingResult bindingResult) {
-        logger.info("User '{}' is creating a new user: {}", userService.getCurrentUser().getId(), userDTO.getUsername());
-        validateUser(userDTO, bindingResult);
-        User user = convertToUser(userDTO);
+    public ResponseEntity<User> createUser(@RequestBody User user, BindingResult bindingResult) {
+        logger.info("User '{}' is creating a new user: {}", userService.getCurrentUser().getId(), user.getUsername());
+        validateUser(user, bindingResult);
         userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PostMapping("/batch")
-    public ResponseEntity<HttpStatus> createPeople(@RequestBody List<UserDTO> usersDTO) {
+    public ResponseEntity<HttpStatus> createPeople(@RequestBody List<User> users) {
         logger.info("User '{}' is creating a batch of users", userService.getCurrentUser().getId());
-        List<User> users = usersDTO.stream()
-                .map(userDTO -> {
-                    validateUser(userDTO, new BeanPropertyBindingResult(userDTO, "UserDTO"));
-                    return convertToUser(userDTO);
+        users.stream().map(user -> {
+                    validateUser(user, new BeanPropertyBindingResult(user, "UserDTO"));
+                    return user;
                 })
                 .toList();
         userService.saveAll(users);
@@ -73,10 +67,9 @@ public class UserApiController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") int id, @RequestBody @Valid User user, BindingResult bindingResult) {
         logger.info("User '{}' is updating user with ID: {}", userService.getCurrentUser().getId(), id);
-        validateUser(userDTO, bindingResult);
-        User user = convertToUser(userDTO);
+        validateUser(user, bindingResult);
         int currentUserId = userService.getCurrentUser().getId();
         return userService.findOne(id)
                 .map(existingUser -> {
@@ -104,12 +97,8 @@ public class UserApiController {
     }
 
 
-    private User convertToUser(UserDTO userDTO) {
-        return modelMapper.map(userDTO, User.class);
-    }
-
-    private void validateUser(UserDTO userDTO, BindingResult bindingResult) {
-        userValidator.validate(userDTO, bindingResult);
+    private void validateUser(User user, BindingResult bindingResult) {
+        userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             logger.info("Data validation failed for author user: {}.", userService.getCurrentUser().getId());
             throw new NotCreatedOrUpdatedException(buildErrorMessage(bindingResult));

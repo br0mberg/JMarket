@@ -2,13 +2,11 @@ package ru.brombin.JMarket.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.brombin.JMarket.dto.UserDTO;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.services.UserService;
 import ru.brombin.JMarket.util.validators.UserValidator;
@@ -22,8 +20,6 @@ public class UserController {
     private final UserService userService;
     @Autowired
     private final UserValidator userValidator;
-    @Autowired
-    private final ModelMapper modelMapper;
 
     @GetMapping()
     public String index(Model model) {
@@ -35,31 +31,32 @@ public class UserController {
     public String show(@PathVariable("id") int id, Model model) {
         User user = userService.findOne(id)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
-        model.addAttribute("user", convertToUserDTO(user));
+        model.addAttribute("user", user);
         return "user/show";
     }
 
     @GetMapping("/new")
     public String addNew(Model model) {
-        model.addAttribute("user", new UserDTO());
+        model.addAttribute("user", new User());
         model.addAttribute("roles", User.getUserRoles());
         return "user/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") @Valid UserDTO userDTO, BindingResult bindingResult) {
-        return handleUserForm(userDTO, bindingResult, "user/new", null);
+    public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        return handleUserForm(user, bindingResult, "user/new", null);
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", convertToUserDTO(userService.findOne(id).orElseThrow(() -> new NotFoundException("User not found: " + id))));
+        model.addAttribute("user", userService.findOne(id)
+                .orElseThrow(() -> new NotFoundException("User not found: " + id)));
         return "user/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid UserDTO userDTO, BindingResult bindingResult, @PathVariable("id") int id) {
-        return handleUserForm(userDTO, bindingResult, "user/edit", id);
+    public String update(@ModelAttribute("person") @Valid User user, BindingResult bindingResult, @PathVariable("id") int id) {
+        return handleUserForm(user, bindingResult, "user/edit", id);
     }
 
     //DELETE
@@ -69,11 +66,10 @@ public class UserController {
         return "redirect:/users";
     }
 
-    private String handleUserForm(UserDTO userDTO, BindingResult bindingResult, String errorView, Integer id) {
-        userValidator.validate(userDTO, bindingResult);
+    private String handleUserForm(User user, BindingResult bindingResult, String errorView, Integer id) {
+        userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) return errorView;
 
-        User user = convertToUser(userDTO);
         if (id != null) {
             userService.update(id, user);
         } else {
@@ -81,13 +77,5 @@ public class UserController {
         }
 
         return id == null ? "redirect:/users" : "redirect:/users/" + id;
-    }
-
-    private User convertToUser(UserDTO userDTO) {
-        return modelMapper.map(userDTO, User.class);
-    }
-
-    private UserDTO convertToUserDTO(User user) {
-        return modelMapper.map(user, UserDTO.class);
     }
 }

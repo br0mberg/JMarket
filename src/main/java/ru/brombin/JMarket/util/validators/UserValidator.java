@@ -5,11 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.brombin.JMarket.dto.UserDTO;
+import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.repositories.UserRepository;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -18,28 +16,26 @@ import java.time.format.DateTimeParseException;
 public class UserValidator implements Validator {
     @Autowired
     private final UserRepository userRepository;
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return UserDTO.class.equals(clazz);
+        return User.class.equals(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-        UserDTO userDTO = (UserDTO) target;
+        User user = (User) target;
 
         // Проверка уникальности имени пользователя
-        if (userRepository.findByUsername(userDTO.getUsername()).isPresent())
+        if (userRepository.findByUsername(user.getUsername()).isPresent())
             errors.rejectValue("username", "", "This username is already taken");
 
         // Проверка уникальности email
-        if (userRepository.findByEmail(userDTO.getEmail()) != null)
+        if (userRepository.findByEmail(user.getEmail()) != null)
             errors.rejectValue("email", "", "This email is already taken");
 
-        // Проверка формата даты рождения
         try {
-            LocalDate dateOfBirth = LocalDate.parse(userDTO.getDateOfBirth(), DATE_FORMATTER);
+            LocalDate dateOfBirth = user.getDateOfBirth();
 
             // Проверка на будущее время
             if (dateOfBirth.isAfter(LocalDate.now())) {

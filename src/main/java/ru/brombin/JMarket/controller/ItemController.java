@@ -1,25 +1,17 @@
 package ru.brombin.JMarket.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.brombin.JMarket.dto.ItemDTO;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.services.ItemService;
 import ru.brombin.JMarket.services.UserService;
-import ru.brombin.JMarket.util.ErrorResponse;
-import ru.brombin.JMarket.util.exceptions.NotCreatedOrUpdatedException;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 import ru.brombin.JMarket.util.validators.ItemValidator;
 
@@ -36,15 +28,13 @@ public class ItemController {
     @Autowired
     private final ItemValidator itemValidator;
     @Autowired
-    private final ModelMapper modelMapper;
-    @Autowired
     private final UserService userService;
 
 
     @GetMapping()
     public String index(Model model) {
         logger.info("Items list requested from User '{}'", userService.getCurrentUser().getId());
-        model.addAttribute("items", convertToItemDTOList(itemService.findAll()));
+        model.addAttribute("items", itemService.findAll());
         return "item/index";
     }
 
@@ -55,41 +45,41 @@ public class ItemController {
         Item item = itemService.findOne(id)
                 .orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
 
-        model.addAttribute("item", convertToItemDTO(item));
+        model.addAttribute("item", item);
         return "item/show";
     }
 
     @GetMapping("/new")
     public String addNew(Model model) {
         logger.info("New item form requested from User '{}'", userService.getCurrentUser().getId());
-        model.addAttribute("item", new ItemDTO());
+        model.addAttribute("item", new Item());
         model.addAttribute("categories", Item.getItemCategories());
         return "item/new";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("item") @Valid ItemDTO itemDTO, BindingResult bindingResult) {
+    public String create(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult) {
         logger.info("New item creation request received from User '{}'", userService.getCurrentUser().getId());
-        return handleItemForm(itemDTO, bindingResult, "item/new", null);
+        return handleItemForm(item, bindingResult, "item/new", null);
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         logger.info("Item edit form requested for item '{}' from User '{}'",
                 id, userService.getCurrentUser().getId());
-        ItemDTO itemDTO = convertToItemDTO(itemService.findOne(id)
-                .orElseThrow(() -> new NotFoundException("Item not found with id: " + id)));
+        Item item = itemService.findOne(id)
+                .orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
         model.addAttribute("categories", Item.getItemCategories());
-        model.addAttribute("item", itemDTO);
+        model.addAttribute("item", item);
         return "item/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("item") @Valid ItemDTO itemDTO,
+    public String update(@ModelAttribute("item") @Valid Item item,
                          BindingResult bindingResult, @PathVariable("id") int id, Model model) {
         logger.info("Update request for item '{}' received from User '{}'",
                 id, userService.getCurrentUser().getId());
-        return handleItemForm(itemDTO, bindingResult, "item/edit", id);
+        return handleItemForm(item, bindingResult, "item/edit", id);
     }
 
     @DeleteMapping("/{id}")
@@ -100,26 +90,13 @@ public class ItemController {
         return "redirect:/items";
     }
 
-    private List<ItemDTO> convertToItemDTOList(List<Item> items) {
-        return items.stream().map(this::convertToItemDTO).collect(Collectors.toList());
-    }
-
-    private ItemDTO convertToItemDTO(Item item) {
-        return modelMapper.map(item, ItemDTO.class);
-    }
-
-    private Item convertToItem(ItemDTO itemDTO) {
-        return modelMapper.map(itemDTO, Item.class);
-    }
-
-    private String handleItemForm(ItemDTO itemDTO, BindingResult bindingResult, String errorView, Integer id) {
-        itemValidator.validate(itemDTO, bindingResult);
+    private String handleItemForm(Item item, BindingResult bindingResult, String errorView, Integer id) {
+        itemValidator.validate(item, bindingResult);
         if (bindingResult.hasErrors()) {
             logger.info("Data validation failed for author user: {}.", userService.getCurrentUser().getId());
             return errorView;
         }
 
-        Item item = convertToItem(itemDTO);
         if (id != null) {
             itemService.update(id, item);
             return "redirect:/items/" + id;

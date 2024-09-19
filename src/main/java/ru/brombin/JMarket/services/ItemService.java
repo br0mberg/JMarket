@@ -1,11 +1,9 @@
 package ru.brombin.JMarket.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.brombin.JMarket.dto.ItemDTO;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.repositories.ItemRepository;

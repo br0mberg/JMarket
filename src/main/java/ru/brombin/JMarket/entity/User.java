@@ -1,6 +1,7 @@
 package ru.brombin.JMarket.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,26 +27,35 @@ public class User implements UserDetails {
     private int id;
 
     @Column(name="username", nullable = false, unique = true)
+    @NotEmpty(message="Name should not be empty")
+    @Size(min=2, max=30, message="Name should be between 2 and 30 characters")
     private String username;
 
     @Column(name="password", nullable = false)
+    @NotEmpty(message="Password can't be empty")
     private String password;
 
     @Column(name="age", nullable = false)
+    @Min(value=0, message="Age should be greater than 0")
     private int age;
 
     @Column(name="email", nullable = false, unique = true)
+    @NotEmpty(message="Email should not be empty")
+    @Email(message = "Email should be valid")
     private String email;
 
     @Column(name="role", nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @NotNull(message="Role should be set")
+    private UserRole role = UserRole.ROLE_USER;
 
     @OneToMany(mappedBy = "owner", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Item> items;
 
     @Column(name="date_of_birth", nullable = false)
     @Temporal(TemporalType.DATE)
+    @NotEmpty(message="Date of Birth should not be empty")
+    @Pattern(regexp = "\\d{4}/\\d{2}/\\d{2}", message = "Date of Birth should be in the format YYYY/MM/DD")
     private LocalDate dateOfBirth;
 
     @Column(name="registration_date", nullable = false)
