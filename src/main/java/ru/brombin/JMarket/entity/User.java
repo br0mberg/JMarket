@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,8 +55,8 @@ public class User implements UserDetails {
 
     @Column(name="date_of_birth", nullable = false)
     @Temporal(TemporalType.DATE)
-    @NotEmpty(message="Date of Birth should not be empty")
-    @Pattern(regexp = "\\d{4}/\\d{2}/\\d{2}", message = "Date of Birth should be in the format YYYY/MM/DD")
+    @NotNull(message = "Date of birth is required")
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate dateOfBirth;
 
     @Column(name="registration_date", nullable = false)

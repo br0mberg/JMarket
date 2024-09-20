@@ -15,9 +15,6 @@ import ru.brombin.JMarket.services.UserService;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 import ru.brombin.JMarket.util.validators.ItemValidator;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Controller
 @RequestMapping("/items")
 @AllArgsConstructor

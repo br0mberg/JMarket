@@ -26,11 +26,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            UserService userService) throws Exception{
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/static/**", "/images/**", "/item/**").permitAll()
-                        .requestMatchers("/items", "/items/{id}").hasAnyRole("USER", "SELLER", "ADMIN")
+                        .requestMatchers("/users", "/items/**").hasRole("ADMIN")
                         .requestMatchers("/items/new").hasAnyRole("SELLER", "ADMIN")
                         .requestMatchers("/items/*/edit").hasRole("ADMIN")
-                        .requestMatchers("/people", "/people/**", "/items/**").hasRole("ADMIN")
+                        .requestMatchers("/items", "/items/{id}").hasAnyRole("USER", "SELLER", "ADMIN")
                         .requestMatchers("/auth/**", "/error").permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN", "SELLER")
                 )

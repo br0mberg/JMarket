@@ -17,28 +17,24 @@
     <p><span>Quantity:</span> <span th:text="${item.quantity}">Item Quantity</span></p>
     <p><span>Article Number:</span> <span th:text="${item.articleNumber}">Item Article Number</span></p>
 
-    <!-- Date formatting -->
     <p><span>Created Date:</span>
-        <span th:text="${#dates.format(item.createdDate, 'yyyy-MM-dd HH:mm:ss')}">Item Created Date</span>
+        <span th:text="${item.createdDate}">Item Created Date</span>
     </p>
 
     <p><span>Last Quantity Change:</span>
-        <span th:text="${#dates.format(item.quantityChangeDate, 'yyyy-MM-dd HH:mm:ss')}">Item Quantity Change Date</span>
+        <span th:text="${item.quantityChangeDate}">Item Quantity Change Date</span>
     </p>
 
-    <!-- Edit item link -->
     <div class="edit-button">
         <a th:href="@{/items/{id}/edit(id=${item.id})}">Edit item</a>
     </div>
 
-    <!-- Delete item form -->
     <div class="delete-button">
         <form th:action="@{/items/{id}(id=${item.id})}" th:method="DELETE">
             <button type="submit" class="delete-button">Delete item</button>
         </form>
     </div>
 
-    <!-- Back to items link -->
     <div class="back-button">
         <a th:href="@{/items}">Back to items</a>
     </div>

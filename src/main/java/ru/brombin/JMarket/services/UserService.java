@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.entity.User;
@@ -25,6 +26,8 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     
     public List<User> findAll() {
@@ -45,9 +48,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void save(User User) {
-        User.setRegistrationDate(LocalDateTime.now());
-        userRepository.save(User);
+    public void save(User user) {
+        user.setRegistrationDate(LocalDateTime.now());
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
+        userRepository.save(user);
     }
 
     @Transactional
