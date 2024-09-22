@@ -29,6 +29,7 @@ target/
 /httpRequests/
 /dataSources/
 /dataSources.local.xml
+/logs
 
 # Ignore IDE-specific files
 /.vscode/

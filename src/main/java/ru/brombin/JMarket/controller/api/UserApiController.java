@@ -47,7 +47,7 @@ public class UserApiController {
 
     @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody User user, BindingResult bindingResult) {
-        logger.info("User '{}' is creating a new user: {}", userService.getCurrentUser().getId(), user.getUsername());
+        logger.info("User '{}' is creating a new user", userService.getCurrentUser().getId());
         validateUser(user, bindingResult);
         userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
@@ -57,7 +57,7 @@ public class UserApiController {
     public ResponseEntity<HttpStatus> createPeople(@RequestBody List<User> users) {
         logger.info("User '{}' is creating a batch of users", userService.getCurrentUser().getId());
         users.stream().map(user -> {
-                    validateUser(user, new BeanPropertyBindingResult(user, "UserDTO"));
+                    validateUser(user, new BeanPropertyBindingResult(user, "user"));
                     return user;
                 })
                 .toList();

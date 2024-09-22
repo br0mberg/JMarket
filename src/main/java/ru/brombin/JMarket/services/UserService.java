@@ -3,6 +3,8 @@ package ru.brombin.JMarket.services;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,39 +26,49 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
     private final UserRepository userRepository;
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
-    
     public List<User> findAll() {
+        logger.info("Fetching all users by user {}", getCurrentUser().getId());
         return userRepository.findAll();
     }
 
     public Optional<User> findOne(int id) {
+        logger.info("Searching for user with id {} by user {}", id, getCurrentUser().getId());
         Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            logger.warn("User with id {} not found", id);
+        }
         return user;
     }
 
     public List<User> findByName(String name) {
+        logger.info("Searching for users with name {} by user {}", name, getCurrentUser().getId());
         return userRepository.findByUsernameOrderByAge(name);
     }
 
     public User findByEmail(String email){
+        logger.info("Searching for user with email {} by user {}", email, getCurrentUser().getId());
         return userRepository.findByEmail(email);
     }
 
     @Transactional
     public void save(User user) {
+        logger.info("Saving new user by user {}", getCurrentUser().getId());
         user.setRegistrationDate(LocalDateTime.now());
         String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(password);
         userRepository.save(user);
+        logger.info("User '{}' saved successfully", user.getId());
     }
 
     @Transactional
     public void update(int id, User updatedUser) {
+        logger.info("Updating user with id {} by user {}", id, getCurrentUser().getId());
         try {
             userRepository.updateUserFields(id,
                     updatedUser.getUsername(),
@@ -65,6 +77,7 @@ public class UserService implements UserDetailsService {
                     updatedUser.getEmail(),
                     updatedUser.getRole(),
                     updatedUser.getDateOfBirth().atStartOfDay());
+            logger.info("User with id {} updated successfully", id);
         } catch (Exception e) {
             throw new NotFoundException("User with id " + id + " not found");
         }
@@ -72,15 +85,19 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void delete(int id) {
+        logger.info("Deleting user with id {} by user {}", id, getCurrentUser().getId());
         userRepository.deleteById(id);
+        logger.info("User with id {} deleted successfully", id);
     }
 
     @Transactional
     public void saveAll(List<User> people) {
+        logger.info("Saving list of users, total: {} by user {}", people.size(), getCurrentUser().getId());
         for (User p : people) {
             p.setRegistrationDate(LocalDateTime.now());
         }
         userRepository.saveAll(people);
+        logger.info("List of users saved successfully, total: {}", people.size());
     }
 
     public String getClientIp(HttpServletRequest request) {

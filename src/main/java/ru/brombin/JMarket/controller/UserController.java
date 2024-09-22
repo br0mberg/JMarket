@@ -18,7 +18,7 @@ import ru.brombin.JMarket.util.exceptions.NotFoundException;
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private final UserService userService;
     @Autowired
@@ -81,7 +81,6 @@ public class UserController {
 
     private String handleUserForm(User user, BindingResult bindingResult, String errorView, Integer id) {
         userValidator.validate(user, bindingResult);
-        System.out.println(bindingResult.getFieldErrors());
         if (bindingResult.hasErrors()) {
             logger.info("New User validation failed for author user: {}.", userService.getCurrentUser().getId());
             return errorView;
