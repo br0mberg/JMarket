@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.repositorie.ItemRepository;
+import ru.brombin.JMarket.repository.ItemRepository;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 import java.util.List;

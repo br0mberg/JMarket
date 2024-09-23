@@ -6,10 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.brombin.JMarket.controller.UserController;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.repositorie.ItemRepository;
+import ru.brombin.JMarket.repository.ItemRepository;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 import java.time.LocalDateTime;

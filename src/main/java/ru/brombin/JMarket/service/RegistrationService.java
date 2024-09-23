@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.repositorie.UserRepository;
+import ru.brombin.JMarket.repository.UserRepository;
 
 import java.sql.Timestamp;
 

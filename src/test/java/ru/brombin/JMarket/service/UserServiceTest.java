@@ -9,7 +9,7 @@ import org.mockito.Spy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.repositorie.UserRepository;
+import ru.brombin.JMarket.repository.UserRepository;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 import java.util.Optional;

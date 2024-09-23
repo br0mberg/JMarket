@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.brombin.JMarket.entity.Item;
-import ru.brombin.JMarket.repositorie.ItemRepository;
+import ru.brombin.JMarket.repository.ItemRepository;
 
 @Component
 public class ItemValidator implements Validator {

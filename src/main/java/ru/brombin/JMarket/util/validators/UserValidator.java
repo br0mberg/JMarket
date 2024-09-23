@@ -6,9 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.repositorie.UserRepository;
+import ru.brombin.JMarket.repository.UserRepository;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @Component
