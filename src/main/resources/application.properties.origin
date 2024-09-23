@@ -13,3 +13,8 @@ spring.datasource.password=
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.properties.hibernate.show_sql=true
 spring.jpa.show-sql=true
+
+spring.liquibase.enabled=true
+spring.liquibase.drop-first=false
+spring.liquibase.change-log=classpath:resources/db/changelog/db.changelog-master.yaml
+spring.liquibase.default-schema=public

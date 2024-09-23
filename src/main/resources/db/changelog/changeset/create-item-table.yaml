@@ -48,18 +48,18 @@ databaseChangeLog:
                     unique: true
               - column:
                   name: created_date
-                  type: datetime
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
                   name: quantity_change_date
-                  type: datetime
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
                   name: user_id
                   type: int
                   constraints:
-                    foreignKeyName: fk_item_person
+                    foreignKeyName: fk_item_user
                     references: user(id)
                     nullable: true

@@ -21,7 +21,6 @@ import java.util.*;
 @Getter
 @Setter
 public class User implements UserDetails {
-
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

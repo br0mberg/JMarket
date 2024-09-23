@@ -26,11 +26,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            UserService userService) throws Exception{
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/users", "/items/**").hasRole("ADMIN")
+                        .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/items/new").hasAnyRole("SELLER", "ADMIN")
                         .requestMatchers("/items/*/edit").hasRole("ADMIN")
                         .requestMatchers("/items", "/items/{id}").hasAnyRole("USER", "SELLER", "ADMIN")
                         .requestMatchers("/auth/**", "/error").permitAll()
+                        .requestMatchers("/items/**").hasRole("ADMIN")  // Этот маршрут ставим после более узких маршрутов
                         .anyRequest().hasAnyRole("USER", "ADMIN", "SELLER")
                 )
                 .formLogin(this::configureFormLogin)

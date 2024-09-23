@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: brombin
+      changes:
+        - createTable:
+            tableName: "user"
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+                  constraints:
+                    nullable: false
+                    checkConstraint: "age >= 0"
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: role
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+                    checkConstraint: "role IN ('ROLE_ADMIN', 'ROLE_USER', 'ROLE_SELLER')"
+              - column:
+                  name: date_of_birth
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: registration_date
+                  type: datetime
+                  constraints:
+                    nullable: false
