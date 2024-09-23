@@ -1,0 +1,10 @@
+version: '3'
+services:
+    JMarket-pg:
+        image: postgres:13.3
+        environment:
+            - POSTGRES_USER=
+            - POSTGRES_PASSWORD=
+            - POSTGRES_DB=
+        ports:
+            - '5432:5432'
