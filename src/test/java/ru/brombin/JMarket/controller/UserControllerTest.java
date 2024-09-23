@@ -7,7 +7,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.services.UserService;
+import ru.brombin.JMarket.service.UserService;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 import ru.brombin.JMarket.util.validators.UserValidator;
 

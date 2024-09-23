@@ -1,4 +1,4 @@
-package ru.brombin.JMarket.services;
+package ru.brombin.JMarket.service;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.controller.UserController;
 import ru.brombin.JMarket.entity.Item;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.repositories.ItemRepository;
+import ru.brombin.JMarket.repositorie.ItemRepository;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 import java.time.LocalDateTime;

@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.services.UserService;
+import ru.brombin.JMarket.service.UserService;
 import ru.brombin.JMarket.util.validators.UserValidator;
 import ru.brombin.JMarket.util.exceptions.NotCreatedOrUpdatedException;
 

@@ -1,4 +1,4 @@
-package ru.brombin.JMarket.services;
+package ru.brombin.JMarket.service;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.repositories.UserRepository;
+import ru.brombin.JMarket.repositorie.UserRepository;
 
 import java.sql.Timestamp;
 

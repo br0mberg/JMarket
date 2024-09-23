@@ -1,4 +1,4 @@
-package ru.brombin.JMarket.repositories;
+package ru.brombin.JMarket.repositorie;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

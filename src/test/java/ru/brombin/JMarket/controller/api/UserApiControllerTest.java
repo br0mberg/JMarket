@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import ru.brombin.JMarket.entity.User;
-import ru.brombin.JMarket.services.UserService;
+import ru.brombin.JMarket.service.UserService;
 import ru.brombin.JMarket.util.exceptions.NotCreatedOrUpdatedException;
 import ru.brombin.JMarket.util.validators.UserValidator;
 
