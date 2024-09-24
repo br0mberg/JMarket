@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <link rel="stylesheet" th:href="@{/user/index.css}" />
+</head>
+<body>
+
+<div class="container">
+    <h1>All Users</h1>
+
+    <div class="user-grid">
+        <div class="user-card" th:each="user : ${users}">
+            <a th:href="@{/users/{id}(id=${user.getId()})}">
+                <img th:src="@{/images/default-user.png}" alt="User Image" class="user-image"/>
+                <div class="user-details">
+                    <h2 th:text="${user.getUsername()}"></h2>
+                    <p>Email: <span th:text="${user.getEmail()}"></span></p>
+                    <p>Role: <span th:text="${user.getRole()}"></span></p>
+                    <p>Date of Birth: <span th:text="${user.getDateOfBirth()}"></span></p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Кнопка для добавления нового пользователя -->
+    <div class="add-user-button">
+        <a th:href="@{/users/new}">
+            <button>Add New User</button>
+        </a>
+    </div>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <ul>
+            <!-- Ссылка на предыдущую страницу -->
+            <li th:if="${currentPage > 0}">
+                <a th:href="@{/users(page=${currentPage - 1}, size=${size})}">Previous</a>
+            </li>
+
+            <!-- Номера страниц -->
+            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a th:href="@{/users(page=${i}, size=${size})}"
+                   th:text="${i + 1}"
+                   th:classappend="${i == currentPage} ? 'active' : ''"></a>
+            </li>
+
+            <!-- Ссылка на следующую страницу -->
+            <li th:if="${currentPage < totalPages - 1}">
+                <a th:href="@{/users(page=${currentPage + 1}, size=${size})}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Кнопка для выхода из системы -->
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="Logout" class="logout-button">
+    </form>
+</div>
+
+</body>
+</html>

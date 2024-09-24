@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.entity.Item;
@@ -24,6 +27,11 @@ public class ItemService {
     private final ItemRepository itemRepository;
     @Autowired
     private final UserService userService;
+
+    public Page<Item> findAllWithPagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return itemRepository.findAll(pageable);
+    }
 
     public List<Item> findAll() {
         logger.info("Fetching all items from the repository by User {}", userService.getCurrentUser().getId());

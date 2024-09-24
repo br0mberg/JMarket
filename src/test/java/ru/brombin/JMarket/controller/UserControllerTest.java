@@ -38,14 +38,19 @@ public class UserControllerTest {
     @Test
     void testIndex() {
         // Подготовка
-        when(userService.getCurrentUser()).thenReturn(createCurrentUser()); // Подделываем текущего пользователя
+        User currentUser = createCurrentUser(); // Создаем текущего пользователя
+        when(userService.getCurrentUser()).thenReturn(currentUser); // Подделываем текущего пользователя
         when(userService.findAll()).thenReturn(List.of(new User(), new User())); // Подделываем список пользователей
 
+        int page = 0;
+        int size = 10;
+
         // Тест
-        String viewName = userController.index(model);
+        String viewName = userController.index(page, size, model);
 
         // Проверка
         verify(userService).findAll(); // Проверяем, что метод findAll был вызван
+        verify(model).addAttribute("users", List.of(new User(), new User())); // Проверяем, что список пользователей добавлен в модель
         assertEquals("user/index", viewName); // Проверяем возвращаемое представление
     }
 

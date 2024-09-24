@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,9 +27,22 @@ public class UserController {
     private final UserValidator userValidator;
 
     @GetMapping()
-    public String index(Model model) {
+    public String index(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            Model model) {
         logger.info("Users list requested from User '{}'", userService.getCurrentUser().getId());
-        model.addAttribute("users", userService.findAll());
+
+        if (page < 0 || size <= 0) {
+            logger.warn("Invalid page or size values: page = {}, size = {}", page, size);
+            return "redirect:/users?page=0&size=10";
+        }
+
+        Page<User> userPage = userService.findAllWithPagination(page, size);
+        model.addAttribute("users", userPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", userPage.getTotalPages());
         return "user/index";
     }
 

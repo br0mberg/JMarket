@@ -1,5 +1,7 @@
 package ru.brombin.JMarket.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,13 +15,11 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
+    Page<User> findAll(Pageable pageable);
+    Page<User> findByUsernameOrderByAge(String username, Pageable pageable);
     Optional<User> findByUsername(String username);
-
     List<User> findByUsernameOrderByAge(String username);
-
     User findByEmail(String email);
-
     List<User> findByEmailStartingWith(String startingWith);
 
     @Modifying

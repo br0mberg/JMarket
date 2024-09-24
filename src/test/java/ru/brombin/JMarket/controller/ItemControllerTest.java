@@ -42,12 +42,20 @@ public class ItemControllerTest {
 
     @Test
     void testIndex() {
-        when(userService.getCurrentUser()).thenReturn(createCurrentUser());
+        // Подготовка
+        User currentUser = createCurrentUser();
+        when(userService.getCurrentUser()).thenReturn(currentUser);
         when(itemService.findAll()).thenReturn(List.of(new Item(), new Item()));
 
-        String viewName = itemController.index(model);
+        int page = 0;
+        int size = 10;
 
+        // Тест
+        String viewName = itemController.index(page, size, model);
+
+        // Проверка
         verify(itemService).findAll();
+        verify(model).addAttribute("items", List.of(new Item(), new Item()));
         assertEquals("item/index", viewName);
     }
 

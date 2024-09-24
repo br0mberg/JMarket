@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #172D13; /* Dark background */
+    color: #fff; /* Light text color for contrast */
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,7 +11,7 @@ body {
 }
 
 .form-container {
-    background-color: #fff;
+    background-color: #6BB77B; /* Light card background */
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -21,7 +21,7 @@ body {
 .form-container h1 {
     font-size: 24px;
     margin-bottom: 20px;
-    color: #007BFF;
+    color: #D76F30; /* Orange text for the heading */
     text-align: center;
 }
 
@@ -29,31 +29,34 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #555;
+    color: #fff; /* White text for labels */
 }
 
-.form-container input[type="text"] {
+.form-container input[type="text"],
+.form-container input[type="password"],
+.form-container select { /* Include select in the input styles */
     width: 100%;
     padding: 8px;
     margin-bottom: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; /* Light border for input fields */
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: #fff; /* White background for inputs and select */
+    color: #333; /* Dark text color for inputs and select */
+    appearance: none; /* Remove default styling for select dropdown */
 }
 
-.form-container input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
+.form-container select {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23333"><path d="M7 10l5 5 5-5z"/></svg>'); /* Custom dropdown arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1rem; /* Size of the dropdown arrow */
 }
 
 .form-container input[type="submit"] {
     width: 100%;
     padding: 10px;
-    background-color: #007BFF;
+    background-color: #D76F30; /* Orange background for buttons */
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -62,11 +65,11 @@ body {
 }
 
 .form-container input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #b56328; /* Darker shade for hover effect */
 }
 
 .error-message {
-    color: #dc3545;
+    color: #dc3545; /* Error message color */
     font-size: 14px;
     margin-top: -10px;
     margin-bottom: 15px;

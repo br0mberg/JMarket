@@ -1,0 +1,180 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #172D13; /* Темный фон */
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative; /* Для правильного позиционирования кнопки Logout */
+}
+
+.user-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Отступы между карточками */
+    justify-content: flex-start; /* Начало строки для выравнивания карточек */
+}
+
+.user-card {
+    background-color: #6BB77B; /* Светлая карточка */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Легче тень */
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+    flex: 1 1 calc(33.333% - 20px); /* Три карточки в строке с отступами */
+    max-width: calc(33.333% - 20px); /* Максимальная ширина карточки */
+    box-sizing: border-box; /* Учитывает отступы и границы в расчете ширины */
+    margin-bottom: 20px; /* Отступ снизу карточки */
+    width: 80%; /* Установите ширину карточки в процентах */
+}
+
+.user-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.user-card:hover .user-image {
+    transform: scale(1.05);
+}
+
+.user-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.user-card a:hover {
+    text-decoration: none;
+}
+
+.user-details {
+    margin-top: 15px;
+}
+
+.user-details h2 {
+    font-size: 1.5em;
+    margin: 0;
+    color: #fff;
+    text-decoration: none;
+}
+
+.user-details p {
+    margin: 5px 0;
+    color: #ddd;
+    text-decoration: none;
+}
+
+.add-user-button {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.add-user-button button {
+    background-color: #D76F30;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.add-user-button button:hover {
+    background-color: #D76F30;
+    transform: translateY(-3px);
+}
+
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #D76F30;
+    border: none;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-align: center;
+    transition: background-color 0.3s;
+    z-index: 10;
+}
+
+.logout-button:hover {
+    background-color: #D76F30;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.pagination ul li {
+    margin: 0 5px;
+}
+
+.pagination ul li a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination ul li a.active {
+    background-color: #D76F30;
+    color: white;
+    border-color: #D76F30;
+}
+
+.pagination ul li a:hover {
+    background-color: #f0f0f0;
+    color: #D76F30;
+    border-color: #D76F30;
+}
+
+.pagination ul li a.disabled {
+    pointer-events: none;
+    background-color: #f9f9f9;
+    color: #ccc;
+    border-color: #ddd;
+}
+
+.user-image {
+    width: 50%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .user-card {
+        flex: 1 1 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .user-card {
+        flex: 1 1 calc(100% - 20px);
+        max-width: calc(100% - 20px);
+        width: 95%;
+    }
+}
