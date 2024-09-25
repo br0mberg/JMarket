@@ -1,6 +1,9 @@
 spring.application.username=JMarket
 server.port=
-spring.mvc.hiddenmethod.filter.enabled=
+spring.mvc.hiddenmethod.filter.enabled=true
+logging.structured.format.console=ecs
+logging.file.name=logs/log.json
+scheduler.enabled=true
 
 
 # Data Source
