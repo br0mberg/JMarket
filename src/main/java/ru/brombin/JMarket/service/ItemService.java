@@ -107,4 +107,9 @@ public class ItemService {
             throw new NotFoundException("Item with id " + id + " not found");
         }
     }
+
+    @Transactional
+    public List<Item> findItemsWithLowQuantity(int threshold) {
+        return itemRepository.findItemsWithLowQuantity(threshold);
+    }
 }

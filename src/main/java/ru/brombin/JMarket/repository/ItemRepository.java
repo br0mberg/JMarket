@@ -20,6 +20,9 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     Page<Item> findByOwner(User owner, Pageable pageable);
     Page<Item> findAll(Pageable pageable);
 
+    @Query("SELECT i FROM Item i WHERE i.quantity < :threshold")
+    List<Item> findItemsWithLowQuantity(int threshold);
+
     @Modifying
     @Query("UPDATE Item i SET i.name = :name, " +
             "i.description = :description, " +

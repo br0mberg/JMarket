@@ -18,3 +18,10 @@ spring.liquibase.enabled=true
 spring.liquibase.drop-first=false
 spring.liquibase.change-log=classpath:resources/db/changelog/db.changelog-master.yaml
 spring.liquibase.default-schema=public
+
+spring.mail.host=
+spring.mail.username=
+spring.mail.password=
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
