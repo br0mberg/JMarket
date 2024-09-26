@@ -3,6 +3,7 @@ package ru.brombin.JMarket.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ import ru.brombin.JMarket.util.validators.UserValidator;
 @Controller
 @RequestMapping("/auth")
 @AllArgsConstructor
+@Slf4j
 public class AuthController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     private  final UserValidator userValidator;
     @Autowired
@@ -31,14 +32,14 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request) {
-        logger.info("Login page requested from IP '{}'", userService.getClientIp(request));
+        log.info("Login page requested from IP '{}'", userService.getClientIp(request));
         return "auth/login";
     }
 
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user, HttpServletRequest request) {
         user.setRole(User.UserRole.ROLE_USER);
-        logger.info("Registration page requested from IP '{}'", userService.getClientIp(request));
+        log.info("Registration page requested from IP '{}'", userService.getClientIp(request));
         return "auth/registration";
     }
 
@@ -48,7 +49,7 @@ public class AuthController {
         String userIp = userService.getClientIp(request);
 
         if (bindingResult.hasErrors()) {
-            logger.warn("Registration failed due to validation errors for user: {}", userIp);
+            log.warn("Registration failed due to validation errors for user: {}", userIp);
             return "auth/registration";
         }
 

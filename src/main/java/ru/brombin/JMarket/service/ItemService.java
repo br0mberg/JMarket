@@ -1,6 +1,7 @@
 package ru.brombin.JMarket.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 @AllArgsConstructor
+@Slf4j
+@Transactional(readOnly = true)
 public class ItemService {
-    private static final Logger logger = LoggerFactory.getLogger(ItemService.class);
     @Autowired
     private final ItemRepository itemRepository;
     @Autowired
@@ -34,31 +35,31 @@ public class ItemService {
     }
 
     public List<Item> findAll() {
-        logger.info("Fetching all items from the repository by User {}", userService.getCurrentUser().getId());
+        log.info("Fetching all items from the repository by User {}", userService.getCurrentUser().getId());
         return itemRepository.findAll();
     }
 
     public Optional<Item> findOne(int id) {
-        logger.info("Searching for item with id {} by user {}", id, userService.getCurrentUser().getId());
+        log.info("Searching for item with id {} by user {}", id, userService.getCurrentUser().getId());
         Optional<Item> item = itemRepository.findById(id);
         if (item.isEmpty()) {
-            logger.warn("Item with id {} not found", id);
+            log.warn("Item with id {} not found", id);
         }
         return item;
     }
 
     public List<Item> findByName(String name) {
-        logger.info("Searching for items with name {} by user {}", name, userService.getCurrentUser().getId());
+        log.info("Searching for items with name {} by user {}", name, userService.getCurrentUser().getId());
         return itemRepository.findByName(name);
     }
 
     public List<Item> findByOwner(User owner) {
-        logger.info("Searching for items owned by {} by user {}", owner.getUsername(), userService.getCurrentUser().getId());
+        log.info("Searching for items owned by {} by user {}", owner.getUsername(), userService.getCurrentUser().getId());
         return itemRepository.findByOwner(owner);
     }
 
     public Item findByArticleNumber(String articleNumber) {
-        logger.info("Searching for item with article number {} by user {}", articleNumber, userService.getCurrentUser().getId());
+        log.info("Searching for item with article number {} by user {}", articleNumber, userService.getCurrentUser().getId());
         return itemRepository.findByArticleNumber(articleNumber);
     }
 
@@ -66,22 +67,22 @@ public class ItemService {
     public void save(Item item) {
         User currentUser = userService.getCurrentUser();
         if (currentUser != null) {
-            logger.info("Setting current user {} as owner for the item", currentUser.getId());
+            log.info("Setting current user {} as owner for the item", currentUser.getId());
             item.setOwner(currentUser);
         } else {
-            logger.warn("No current user found to set as owner for the item");
+            log.warn("No current user found to set as owner for the item");
         }
 
         item.setCreatedDate(LocalDateTime.now());
         item.setQuantityChangeDate(LocalDateTime.now());
         itemRepository.save(item);
-        logger.info("Item '{}' saved successfully by user ID {}", item.getId(), currentUser != null ? currentUser.getId() : "unknown");
+        log.info("Item '{}' saved successfully by user ID {}", item.getId(), currentUser != null ? currentUser.getId() : "unknown");
     }
 
     @Transactional
     public void update(int id, Item item) {
         User currentUser = userService.getCurrentUser();
-        logger.info("Updating item with id {} by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
+        log.info("Updating item with id {} by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
         try {
             itemRepository.updateFields(id,
                     item.getName(),
@@ -90,7 +91,7 @@ public class ItemService {
                     item.getPrice(),
                     item.getQuantity(),
                     item.getArticleNumber());
-            logger.info("Item with id {} updated successfully by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
+            log.info("Item with id {} updated successfully by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
         } catch (Exception e) {
             throw new NotFoundException("Item with id " + id + " not found");
         }
@@ -99,10 +100,10 @@ public class ItemService {
     @Transactional
     public void delete(int id) {
         User currentUser = userService.getCurrentUser();
-        logger.info("Deleting item with id {} by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
+        log.info("Deleting item with id {} by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
         try {
             itemRepository.deleteById(id);
-            logger.info("Item with id {} deleted successfully by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
+            log.info("Item with id {} deleted successfully by user ID {}", id, currentUser != null ? currentUser.getId() : "unknown");
         } catch (Exception e) {
             throw new NotFoundException("Item with id " + id + " not found");
         }

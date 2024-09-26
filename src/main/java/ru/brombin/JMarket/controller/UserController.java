@@ -2,6 +2,7 @@ package ru.brombin.JMarket.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,8 @@ import ru.brombin.JMarket.util.exceptions.NotFoundException;
 @Controller
 @RequestMapping("/users")
 @AllArgsConstructor
+@Slf4j
 public class UserController {
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private final UserService userService;
     @Autowired
@@ -31,10 +32,10 @@ public class UserController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
-        logger.info("Users list requested from User '{}'", userService.getCurrentUser().getId());
+        log.info("Users list requested from User '{}'", userService.getCurrentUser().getId());
 
         if (page < 0 || size <= 0) {
-            logger.warn("Invalid page or size values: page = {}, size = {}", page, size);
+            log.warn("Invalid page or size values: page = {}, size = {}", page, size);
             return "redirect:/users?page=0&size=10";
         }
 
@@ -48,7 +49,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        logger.info("User detail page requested for user '{}' from User '{}'", id, userService.getCurrentUser().getId());
+        log.info("User detail page requested for user '{}' from User '{}'", id, userService.getCurrentUser().getId());
         User user = userService.findOne(id)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
         model.addAttribute("user", user);
@@ -57,7 +58,7 @@ public class UserController {
 
     @GetMapping("/new")
     public String addNew(Model model) {
-        logger.info("New user form requested from User '{}'", userService.getCurrentUser().getId());
+        log.info("New user form requested from User '{}'", userService.getCurrentUser().getId());
         model.addAttribute("user", new User());
         model.addAttribute("roles", User.getUserRoles());
         return "user/new";
@@ -65,13 +66,13 @@ public class UserController {
 
     @PostMapping()
     public String create(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        logger.info("New user creation request received from User '{}'", userService.getCurrentUser().getId());
+        log.info("New user creation request received from User '{}'", userService.getCurrentUser().getId());
         return handleUserForm(user, bindingResult, "user/new", null);
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        logger.info("User edit form requested for user '{}' from User author'{}'",
+        log.info("User edit form requested for user '{}' from User author'{}'",
                 id, userService.getCurrentUser().getId());
         model.addAttribute("user", userService.findOne(id)
                 .orElseThrow(() -> new NotFoundException("User not found: " + id)));
@@ -80,15 +81,14 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, @PathVariable("id") int id) {
-        logger.info("Update request for user '{}' received from User '{}'",
+        log.info("Update request for user '{}' received from User '{}'",
                 id, userService.getCurrentUser().getId());
         return handleUserForm(user, bindingResult, "user/edit", id);
     }
 
-    //DELETE
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        logger.info("Delete request for user '{}' received from User '{}'",
+        log.info("Delete request for user '{}' received from User '{}'",
                 id, userService.getCurrentUser().getId());
         userService.delete(id);
         return "redirect:/users";
@@ -97,7 +97,7 @@ public class UserController {
     private String handleUserForm(User user, BindingResult bindingResult, String errorView, Integer id) {
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
-            logger.info("New User validation failed for author user: {}.", userService.getCurrentUser().getId());
+            log.info("New User validation failed for author user: {}.", userService.getCurrentUser().getId());
             return errorView;
         }
 

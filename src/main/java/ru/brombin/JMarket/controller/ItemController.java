@@ -2,6 +2,7 @@ package ru.brombin.JMarket.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ import ru.brombin.JMarket.util.validators.ItemValidator;
 @Controller
 @RequestMapping("/items")
 @AllArgsConstructor
+@Slf4j
 public class ItemController {
-    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
     @Autowired
     private final ItemService itemService;
     @Autowired
@@ -36,10 +37,10 @@ public class ItemController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
-        logger.info("Items list requested from User '{}'", userService.getCurrentUser().getId());
+        log.info("Items list requested from User '{}'", userService.getCurrentUser().getId());
 
         if (page < 0 || size <= 0) {
-            logger.warn("Invalid page or size values: page = {}, size = {}", page, size);
+            log.warn("Invalid page or size values: page = {}, size = {}", page, size);
             return "redirect:/items?page=0&size=10";
         }
 
@@ -54,7 +55,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        logger.info("Item detail page requested for item '{}' from User '{}'", id, userService.getCurrentUser().getId());
+        log.info("Item detail page requested for item '{}' from User '{}'", id, userService.getCurrentUser().getId());
 
         Item item = itemService.findOne(id)
                 .orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
@@ -65,7 +66,7 @@ public class ItemController {
 
     @GetMapping("/new")
     public String addNew(Model model) {
-        logger.info("New item form requested from User '{}'", userService.getCurrentUser().getId());
+        log.info("New item form requested from User '{}'", userService.getCurrentUser().getId());
         model.addAttribute("item", new Item());
         model.addAttribute("categories", Item.getItemCategories());
         return "item/new";
@@ -73,13 +74,13 @@ public class ItemController {
 
     @PostMapping()
     public String create(@ModelAttribute("item") @Valid Item item, BindingResult bindingResult) {
-        logger.info("New item creation request received from User '{}'", userService.getCurrentUser().getId());
+        log.info("New item creation request received from User '{}'", userService.getCurrentUser().getId());
         return handleItemForm(item, bindingResult, "item/new", null);
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        logger.info("Item edit form requested for item '{}' from User '{}'",
+        log.info("Item edit form requested for item '{}' from User '{}'",
                 id, userService.getCurrentUser().getId());
         Item item = itemService.findOne(id)
                 .orElseThrow(() -> new NotFoundException("Item not found with id: " + id));
@@ -91,14 +92,14 @@ public class ItemController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("item") @Valid Item item,
                          BindingResult bindingResult, @PathVariable("id") int id, Model model) {
-        logger.info("Update request for item '{}' received from User '{}'",
+        log.info("Update request for item '{}' received from User '{}'",
                 id, userService.getCurrentUser().getId());
         return handleItemForm(item, bindingResult, "item/edit", id);
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        logger.info("Delete request for item '{}' received from User '{}'",
+        log.info("Delete request for item '{}' received from User '{}'",
                 id, userService.getCurrentUser().getId());
         itemService.delete(id);
         return "redirect:/items";
@@ -107,7 +108,7 @@ public class ItemController {
     private String handleItemForm(Item item, BindingResult bindingResult, String errorView, Integer id) {
         itemValidator.validate(item, bindingResult);
         if (bindingResult.hasErrors()) {
-            logger.info("Data validation failed for author user: {}.", userService.getCurrentUser().getId());
+            log.info("Data validation failed for author user: {}.", userService.getCurrentUser().getId());
             return errorView;
         }
 
