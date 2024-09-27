@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.repository.UserRepository;
+import ru.brombin.JMarket.util.annotation.Timed;
 import ru.brombin.JMarket.util.exceptions.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -97,6 +98,7 @@ public class UserService implements UserDetailsService {
         logger.info("User with id {} deleted successfully", id);
     }
 
+    @Timed
     @Transactional
     public void saveAll(List<User> people) {
         logger.info("Saving list of users, total: {} by user {}", people.size(), getCurrentUser().getId());
