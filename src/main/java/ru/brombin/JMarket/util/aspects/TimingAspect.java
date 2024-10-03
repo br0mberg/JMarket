@@ -6,19 +6,23 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-@Component
+
 @Slf4j
 @Aspect
+@Component
 public class TimingAspect {
     @Around("@annotation(ru.brombin.JMarket.util.annotation.Timed)")
     public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
+        long elapsedTime = System.currentTimeMillis();
+        Object result;
 
-        Object result = joinPoint.proceed();
-
-        long elapsedTime = System.currentTimeMillis() - start;
-        log.info("Method {} executed in {} ms", joinPoint.getSignature(), elapsedTime);
-
+        try {
+            result = joinPoint.proceed();
+        } finally {
+            elapsedTime = System.currentTimeMillis() - start;
+            log.info("Method {} executed in {} ms", joinPoint.getSignature(), elapsedTime);
+        }
         return result;
     }
 }

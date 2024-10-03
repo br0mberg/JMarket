@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configurers.LogoutConf
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.brombin.JMarket.entity.User;
 import ru.brombin.JMarket.service.UserService;
 
 @Configuration
